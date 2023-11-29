@@ -4,7 +4,7 @@
   "description": "CSV Validator",
   "main": "index.js",
   "bin": {
-    "csvv": "./dist/index.js"
+    "csvv": "./cli.js"
   },
   "scripts": {
     "build": "tsc",
