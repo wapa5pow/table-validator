@@ -17,5 +17,8 @@
   "editor.codeActionsOnSave": {
     "quickfix.biome": true,
     "source.organizeImports.biome": true
-  }
+  },
+  "cSpell.words": [
+    "csvv"
+  ]
 }
