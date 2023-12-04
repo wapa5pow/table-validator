@@ -1,0 +1,9 @@
+global:
+  totalColumns: 2
+columns:
+  - name: id
+    rules:
+      - notEmpty
+  - name: name
+    rules:
+      - notEmpty

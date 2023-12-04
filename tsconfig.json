@@ -1,4 +1,8 @@
 {
+  "exclude": [
+    "test",
+    // 他に除外したいファイルやフォルダもここに追加できます
+  ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
     /* Projects */
