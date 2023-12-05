@@ -2,7 +2,7 @@ import { ValidationError } from "./errors";
 import { Result } from "./result";
 import { Row } from "./table";
 
-abstract class Rule {
+export abstract class Rule {
 	abstract name: string;
 
 	// 行全体に対して評価する
