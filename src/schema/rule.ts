@@ -1,6 +1,6 @@
-import { ValidationError } from "./errors";
-import { Result } from "./result";
-import { Row } from "./table";
+import { Result } from "../result";
+import { Row } from "../table/table";
+import { ValidationError } from "../validator/errors";
 
 export abstract class Rule {
 	abstract name: string;
@@ -27,31 +27,5 @@ export class NotEmptyRule extends Rule {
 
 	valid(cellValue: string): boolean {
 		return cellValue !== "";
-	}
-}
-
-// 列のルール
-export class ColumnDefinition {
-	private _rules: Rule[];
-
-	constructor(rules: Rule[]) {
-		this._rules = rules;
-	}
-
-	get rules(): Rule[] {
-		return this._rules;
-	}
-}
-
-// 全体のスキーマ
-export class Schema {
-	private _columnDefinitions: ColumnDefinition[];
-
-	constructor(columnDefinitions: ColumnDefinition[]) {
-		this._columnDefinitions = columnDefinitions;
-	}
-
-	get columnDefinitions(): ColumnDefinition[] {
-		return this._columnDefinitions;
 	}
 }

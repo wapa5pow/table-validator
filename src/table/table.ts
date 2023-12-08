@@ -1,3 +1,6 @@
+import * as fs from "fs";
+import * as papa from "papaparse";
+
 // バリデーション対象のテーブル全体を表すクラス
 export class Table {
 	private _rows: Row[];
@@ -27,4 +30,14 @@ export class Row {
 	get cellValues(): string[] {
 		return this._cellValues;
 	}
+}
+
+export function readTable(path: string): Table {
+	const file = fs.readFileSync(path, "utf8");
+	const csv = papa.parse<string[]>(file, { header: false });
+	// biome-ignore lint/correctness/noUnusedVariables: <explanation>
+	const header = csv.data.shift();
+	const data = csv.data;
+	const table = new Table(data.map((row, index) => new Row(index + 1, row)));
+	return table;
 }
