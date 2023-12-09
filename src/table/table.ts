@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import * as papa from "papaparse";
 
 // バリデーション対象のテーブル全体を表すクラス
@@ -32,9 +31,8 @@ export class Row {
 	}
 }
 
-export function readTable(path: string): Table {
-	const file = fs.readFileSync(path, "utf8");
-	const csv = papa.parse<string[]>(file, { header: false });
+export function convertToTable(content: string) {
+	const csv = papa.parse<string[]>(content, { header: false });
 	// biome-ignore lint/correctness/noUnusedVariables: <explanation>
 	const header = csv.data.shift();
 	const data = csv.data;

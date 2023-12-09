@@ -4,9 +4,6 @@
   "description": "CSV Validator",
   "main": "index.js",
   "types": "dist/index.d.ts",
-  "bin": {
-    "csvv": "./cli.js"
-  },
   "scripts": {
     "build": "rimraf dist && tsc",
     "start": "npm run build && node dist/index.js",

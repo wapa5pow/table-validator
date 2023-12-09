@@ -1,14 +1,10 @@
-import { Result } from "../result";
 import { Schema } from "../schema/schema";
 import { Row, Table } from "../table/table";
 import { ValidationError } from "./errors";
 
 export class Validator {
-	validate(table: Table, schema: Schema): Result<void, ValidationError[]> {
-		const errors = table.rows.flatMap((row) => this.validateRow(row, schema));
-		return errors.length === 0
-			? Result.success(undefined)
-			: Result.failure(errors);
+	validate(table: Table, schema: Schema): ValidationError[] {
+		return table.rows.flatMap((row) => this.validateRow(row, schema));
 	}
 
 	private validateRow(row: Row, schema: Schema): ValidationError[] {

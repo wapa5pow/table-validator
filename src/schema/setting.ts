@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import * as yaml from "yaml";
 import { ColumnDefinition } from "./column-definition";
 import { NotEmptyRule, Rule } from "./rule";
@@ -11,12 +10,8 @@ interface Setting {
 	}[];
 }
 
-export function readSettingFile(path: string): Schema {
-	const setting = yaml.parse(fs.readFileSync(path, "utf8")) as Setting;
-	return convertSettingToSchema(setting);
-}
-
-function convertSettingToSchema(setting: Setting): Schema {
+export function convertToSchema(content: string): Schema {
+	const setting = yaml.parse(content) as Setting;
 	const columnDefinitions: ColumnDefinition[] = [];
 	for (const column of setting.columns) {
 		const rules: Rule[] = [];
