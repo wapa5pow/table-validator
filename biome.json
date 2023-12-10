@@ -16,5 +16,8 @@
 				"noUnusedVariables": "warn"
 			}
 		}
+	},
+	"formatter": {
+		"indentStyle": "space"
 	}
 }

@@ -22,4 +22,4 @@ stringProvider = stringLiteral
 
 stringLiteral = '"' value:[^"]* '"' { return value.join(""); } // any character except '"' 
 
-parenthesizedExpr = "(" value:columnValidationExpr+ ")" { return value; }
+parenthesizedExpr = "(" values:columnValidationExpr+ ")" { return { type: 'array', values: values }; }

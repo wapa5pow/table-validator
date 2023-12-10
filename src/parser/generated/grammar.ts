@@ -336,8 +336,8 @@ function peg$parse(input, options) {
   var peg$f4 = function(value) {// @ts-ignore
  return value.join(""); };// @ts-ignore
 
-  var peg$f5 = function(value) {// @ts-ignore
- return value; };
+  var peg$f5 = function(values) {// @ts-ignore
+ return { type: 'array', values: values }; };
 // @ts-ignore
   var peg$currPos = 0;
 // @ts-ignore
@@ -1237,4 +1237,7 @@ export type SingleExpr = NotEmptyExpr | IsExpr;
 export type NotEmptyExpr = { type: "notEmpty" };
 export type IsExpr = { type: "is"; value: StringLiteral };
 export type StringLiteral = string;
-export type ParenthesizedExpr = ColumnValidationExpr[];
+export type ParenthesizedExpr = {
+  type: "array";
+  values: ColumnValidationExpr[];
+};

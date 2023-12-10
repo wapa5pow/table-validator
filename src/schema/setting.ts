@@ -4,27 +4,27 @@ import { NotEmptyRule, Rule } from "./rule";
 import { Schema } from "./schema";
 
 interface Setting {
-	readonly columns: {
-		readonly id: string;
-		readonly rules: readonly string[];
-	}[];
+  readonly columns: {
+    readonly id: string;
+    readonly rules: readonly string[];
+  }[];
 }
 
 export function convertToSchema(content: string): Schema {
-	const setting = yaml.parse(content) as Setting;
-	const columnDefinitions: ColumnDefinition[] = [];
-	for (const column of setting.columns) {
-		const rules: Rule[] = [];
-		for (const rule of column.rules) {
-			switch (rule) {
-				case "NotEmpty":
-					rules.push(new NotEmptyRule());
-					break;
-				default:
-					throw new Error(`Unknown rule: ${rule}`);
-			}
-		}
-		columnDefinitions.push(new ColumnDefinition(rules));
-	}
-	return new Schema(columnDefinitions);
+  const setting = yaml.parse(content) as Setting;
+  const columnDefinitions: ColumnDefinition[] = [];
+  for (const column of setting.columns) {
+    const rules: Rule[] = [];
+    for (const rule of column.rules) {
+      switch (rule) {
+        case "NotEmpty":
+          rules.push(new NotEmptyRule());
+          break;
+        default:
+          throw new Error(`Unknown rule: ${rule}`);
+      }
+    }
+    columnDefinitions.push(new ColumnDefinition(rules));
+  }
+  return new Schema(columnDefinitions);
 }
