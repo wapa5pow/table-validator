@@ -1,7 +1,5 @@
 columns:
   - id: id
-    rules:
-      - NotEmpty
+    rule: notEmpty
   - id: name
-    rules:
-      - NotEmpty
+    rule: is("a")

@@ -1,14 +1,6 @@
-import { ColumnDefinition } from "./column-definition";
+import { ColumnRule } from "../parser/generated/grammar";
 
 // 全体のスキーマ
 export class Schema {
-  private _columnDefinitions: ColumnDefinition[];
-
-  constructor(columnDefinitions: ColumnDefinition[]) {
-    this._columnDefinitions = columnDefinitions;
-  }
-
-  get columnDefinitions(): ColumnDefinition[] {
-    return this._columnDefinitions;
-  }
+  constructor(readonly columnRules: ColumnRule[]) {}
 }

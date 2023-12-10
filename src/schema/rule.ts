@@ -3,7 +3,8 @@ import { Row } from "../table/table";
 import { ValidationError } from "../validator/errors";
 
 export abstract class Rule {
-  abstract name: string;
+  protected abstract name: string;
+  protected abstract readonly argument: string | undefined;
 
   // 行全体に対して評価する
   evaluate(columnIndex: number, row: Row): Result<void, ValidationError> {
@@ -18,12 +19,22 @@ export abstract class Rule {
 
   // 失敗した場合のエラー定義
   fail(columnIndex: number, row: Row): ValidationError {
-    return new ValidationError(this.name, row.lineNumber, columnIndex);
+    const message = `${this.errorString} fails for line: ${
+      row.lineNumber
+    }, column: ${columnIndex + 1}`;
+    return new ValidationError(message);
+  }
+
+  get errorString() {
+    return this.argument === undefined
+      ? `${this.name}`
+      : `${this.name}(${this.argument})`;
   }
 }
 
 export class NotEmptyRule extends Rule {
   name = "notEmpty";
+  argument = undefined;
 
   valid(cellValue: string): boolean {
     return cellValue !== "";
@@ -33,11 +44,11 @@ export class NotEmptyRule extends Rule {
 export class IsRule extends Rule {
   name = "is";
 
-  constructor(private readonly value: string) {
+  constructor(protected readonly argument: string) {
     super();
   }
 
   valid(cellValue: string): boolean {
-    return cellValue === this.value;
+    return cellValue === this.argument;
   }
 }
