@@ -23,5 +23,7 @@
   },
   "cSpell.words": [
     "csvv"
-  ]
+  ],
+  "jestrunner.runInExternalNativeTerminal": false,
+  "editor.codeLens": true
 }

@@ -1,5 +1,6 @@
 import { ColumnRule } from "../parser/generated/grammar";
-import { IsRule, NotEmptyRule } from "../schema/rule";
+import { IsRule } from "../schema/rule/is-rule";
+import { NotEmptyRule } from "../schema/rule/not-empty-rule";
 import { Schema } from "../schema/schema";
 import { Row, Table } from "../table/table";
 import { ValidationError } from "./errors";
@@ -47,20 +48,12 @@ export class Validator {
       case "is": {
         const isRule = new IsRule(columnRule.value);
         const result = isRule.evaluate(columnIndex, row);
-        const error = result.error;
-        if (error == null) {
-          return [];
-        }
-        return [error];
+        return result.error == null ? [] : [result.error];
       }
       case "notEmpty": {
         const notEmptyRule = new NotEmptyRule();
         const result = notEmptyRule.evaluate(columnIndex, row);
-        const error = result.error;
-        if (error == null) {
-          return [];
-        }
-        return [error];
+        return result.error == null ? [] : [result.error];
       }
       case "array":
         // and/orが書かれていない場合はandとして扱う

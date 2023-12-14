@@ -15,19 +15,12 @@ export class Result<T, E> {
     return new Result<T, E>(undefined, error);
   }
 
-  isSuccess(): boolean {
+  get isSuccess(): boolean {
     return this._error === undefined;
   }
 
-  isError(): boolean {
+  get isError(): boolean {
     return this._error !== undefined;
-  }
-
-  getValue(): T | undefined {
-    if (this.isError()) {
-      throw new Error("Cannot get the value of a failed result.");
-    }
-    return this._value;
   }
 
   get value(): T | undefined {
