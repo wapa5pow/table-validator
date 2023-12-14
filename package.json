@@ -5,7 +5,7 @@
   "main": "index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "buildParser": "rimraf src/parser/generated/* && npx peggy --plugin ts-pegjs src/parser/grammer.pegjs -o src/parser/generated/grammar.ts",
+    "buildParser": "rimraf src/parser/generated/* && npx peggy --plugin ts-pegjs src/schema/parser/grammer.pegjs -o src/schema/parser/generated/grammar.ts",
     "buildTsc": "rimraf dist && tsc",
     "build": "npm run buildParser && npm run buildTsc",
     "react": "npm run build && cd example/react && npm install && npm run start",

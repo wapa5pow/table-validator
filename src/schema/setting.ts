@@ -1,5 +1,5 @@
 import * as yaml from "yaml";
-import { ColumnRule, parse } from "../parser/generated/grammar";
+import { ColumnRule, parse } from "../schema/parser/generated/grammar";
 import { Schema } from "./schema";
 
 interface Setting {

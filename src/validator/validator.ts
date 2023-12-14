@@ -1,4 +1,4 @@
-import { ColumnRule } from "../parser/generated/grammar";
+import { ColumnRule } from "../schema/parser/generated/grammar";
 import { IsRule } from "../schema/rule/is-rule";
 import { NotEmptyRule } from "../schema/rule/not-empty-rule";
 import { Schema } from "../schema/schema";

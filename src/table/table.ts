@@ -32,10 +32,15 @@ export class Row {
 }
 
 export function convertToTable(content: string) {
-  const csv = papa.parse<string[]>(content, { header: false });
-  // biome-ignore lint/correctness/noUnusedVariables: <explanation>
-  const header = csv.data.shift();
+  const hasHeader = false;
+  const csv = papa.parse<string[]>(content, { header: hasHeader });
+  if (hasHeader) {
+    csv.data.shift();
+  }
   const data = csv.data;
-  const table = new Table(data.map((row, index) => new Row(index + 1, row)));
+  const firstLineNumber = hasHeader ? 2 : 1;
+  const table = new Table(
+    data.map((row, index) => new Row(firstLineNumber + index, row)),
+  );
   return table;
 }
