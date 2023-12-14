@@ -11,8 +11,12 @@ interface Setting {
 
 export function convertToContentRule(content: string): Schema {
   const setting = yaml.parse(content) as Setting;
-  const columnRules: grammar.ColumnRule[] = setting.columns.map((column) =>
-    grammar.parse(column.rule),
+  const columnRules = setting.columns.map((column) =>
+    parseColumnRule(column.rule),
   );
   return new Schema(columnRules);
+}
+
+export function parseColumnRule(rule: string): grammar.ColumnRule {
+  return grammar.parse(rule.trim());
 }

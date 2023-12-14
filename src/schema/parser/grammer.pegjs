@@ -1,4 +1,4 @@
-columnRule = columnValidationExpr
+columnRule = columnValidationExpr*
 
 columnValidationExpr = combinatorialExpr / nonCombinatorialExpr
 

@@ -7,7 +7,7 @@ import { Validator } from "./validator"; // Import the Validator class
 describe("Validator", () => {
   describe("validate", () => {
     describe("no rule", () => {
-      it.skip("should return empty error", () => {
+      it("should return empty error", () => {
         const validator = new Validator(); // Declare the validator variable
         const rule = parse("");
         const error = validator.validate(
