@@ -306,8 +306,9 @@ function peg$parse(input, options) {
   var peg$c2 = "notEmpty";
   var peg$c3 = "is(";
   var peg$c4 = ")";
-  var peg$c5 = "\"";
-  var peg$c6 = "(";
+  var peg$c5 = "unique";
+  var peg$c6 = "\"";
+  var peg$c7 = "(";
 
   var peg$r0 = /^[^"]/;
 
@@ -316,9 +317,10 @@ function peg$parse(input, options) {
   var peg$e2 = peg$literalExpectation("notEmpty", false);
   var peg$e3 = peg$literalExpectation("is(", false);
   var peg$e4 = peg$literalExpectation(")", false);
-  var peg$e5 = peg$literalExpectation("\"", false);
-  var peg$e6 = peg$classExpectation(["\""], true, false);
-  var peg$e7 = peg$literalExpectation("(", false);
+  var peg$e5 = peg$literalExpectation("unique", false);
+  var peg$e6 = peg$literalExpectation("\"", false);
+  var peg$e7 = peg$classExpectation(["\""], true, false);
+  var peg$e8 = peg$literalExpectation("(", false);
 // @ts-ignore
 
   var peg$f0 = function(left, right) {// @ts-ignore
@@ -333,10 +335,13 @@ function peg$parse(input, options) {
   var peg$f3 = function(value) {// @ts-ignore
  return { type: 'is', value: value }; };// @ts-ignore
 
-  var peg$f4 = function(value) {// @ts-ignore
+  var peg$f4 = function() {// @ts-ignore
+ return { type: 'unique' }; };// @ts-ignore
+
+  var peg$f5 = function(value) {// @ts-ignore
  return value.join(""); };// @ts-ignore
 
-  var peg$f5 = function(values) {// @ts-ignore
+  var peg$f6 = function(values) {// @ts-ignore
  return { type: 'array', values: values }; };
 // @ts-ignore
   var peg$currPos = 0;
@@ -797,6 +802,11 @@ peg$parsesingleExpr() {
     if (s0 === peg$FAILED) {
 // @ts-ignore
       s0 = peg$parseisExpr();
+// @ts-ignore
+      if (s0 === peg$FAILED) {
+// @ts-ignore
+        s0 = peg$parseunique();
+      }
     }
 
 // @ts-ignore
@@ -912,6 +922,41 @@ peg$parseisExpr() {
 
 // @ts-ignore
   function // @ts-ignore
+peg$parseunique() {
+// @ts-ignore
+    var s0, s1;
+
+// @ts-ignore
+    s0 = peg$currPos;
+// @ts-ignore
+    if (input.substr(peg$currPos, 6) === peg$c5) {
+// @ts-ignore
+      s1 = peg$c5;
+// @ts-ignore
+      peg$currPos += 6;
+// @ts-ignore
+    } else {
+// @ts-ignore
+      s1 = peg$FAILED;
+// @ts-ignore
+      if (peg$silentFails === 0) { peg$fail(peg$e5); }
+    }
+// @ts-ignore
+    if (s1 !== peg$FAILED) {
+// @ts-ignore
+      peg$savedPos = s0;
+// @ts-ignore
+      s1 = peg$f4();
+    }
+// @ts-ignore
+    s0 = s1;
+
+// @ts-ignore
+    return s0;
+  }
+
+// @ts-ignore
+  function // @ts-ignore
 peg$parsestringLiteral() {
 // @ts-ignore
     var s0, s1, s2, s3;
@@ -921,7 +966,7 @@ peg$parsestringLiteral() {
 // @ts-ignore
     if (input.charCodeAt(peg$currPos) === 34) {
 // @ts-ignore
-      s1 = peg$c5;
+      s1 = peg$c6;
 // @ts-ignore
       peg$currPos++;
 // @ts-ignore
@@ -929,7 +974,7 @@ peg$parsestringLiteral() {
 // @ts-ignore
       s1 = peg$FAILED;
 // @ts-ignore
-      if (peg$silentFails === 0) { peg$fail(peg$e5); }
+      if (peg$silentFails === 0) { peg$fail(peg$e6); }
     }
 // @ts-ignore
     if (s1 !== peg$FAILED) {
@@ -946,7 +991,7 @@ peg$parsestringLiteral() {
 // @ts-ignore
         s3 = peg$FAILED;
 // @ts-ignore
-        if (peg$silentFails === 0) { peg$fail(peg$e6); }
+        if (peg$silentFails === 0) { peg$fail(peg$e7); }
       }
 // @ts-ignore
       while (s3 !== peg$FAILED) {
@@ -963,13 +1008,13 @@ peg$parsestringLiteral() {
 // @ts-ignore
           s3 = peg$FAILED;
 // @ts-ignore
-          if (peg$silentFails === 0) { peg$fail(peg$e6); }
+          if (peg$silentFails === 0) { peg$fail(peg$e7); }
         }
       }
 // @ts-ignore
       if (input.charCodeAt(peg$currPos) === 34) {
 // @ts-ignore
-        s3 = peg$c5;
+        s3 = peg$c6;
 // @ts-ignore
         peg$currPos++;
 // @ts-ignore
@@ -977,14 +1022,14 @@ peg$parsestringLiteral() {
 // @ts-ignore
         s3 = peg$FAILED;
 // @ts-ignore
-        if (peg$silentFails === 0) { peg$fail(peg$e5); }
+        if (peg$silentFails === 0) { peg$fail(peg$e6); }
       }
 // @ts-ignore
       if (s3 !== peg$FAILED) {
 // @ts-ignore
         peg$savedPos = s0;
 // @ts-ignore
-        s0 = peg$f4(s2);
+        s0 = peg$f5(s2);
 // @ts-ignore
       } else {
 // @ts-ignore
@@ -1015,7 +1060,7 @@ peg$parseparenthesizedExpr() {
 // @ts-ignore
     if (input.charCodeAt(peg$currPos) === 40) {
 // @ts-ignore
-      s1 = peg$c6;
+      s1 = peg$c7;
 // @ts-ignore
       peg$currPos++;
 // @ts-ignore
@@ -1023,7 +1068,7 @@ peg$parseparenthesizedExpr() {
 // @ts-ignore
       s1 = peg$FAILED;
 // @ts-ignore
-      if (peg$silentFails === 0) { peg$fail(peg$e7); }
+      if (peg$silentFails === 0) { peg$fail(peg$e8); }
     }
 // @ts-ignore
     if (s1 !== peg$FAILED) {
@@ -1065,7 +1110,7 @@ peg$parseparenthesizedExpr() {
 // @ts-ignore
           peg$savedPos = s0;
 // @ts-ignore
-          s0 = peg$f5(s2);
+          s0 = peg$f6(s2);
 // @ts-ignore
         } else {
 // @ts-ignore
@@ -1233,9 +1278,10 @@ export type AndExpr = {
   right: ColumnValidationExpr;
 };
 export type NonConditionalExpr = SingleExpr | ParenthesizedExpr;
-export type SingleExpr = NotEmptyExpr | IsExpr;
+export type SingleExpr = NotEmptyExpr | IsExpr | Unique;
 export type NotEmptyExpr = { type: "notEmpty" };
 export type IsExpr = { type: "is"; value: StringLiteral };
+export type Unique = { type: "unique" };
 export type StringLiteral = string;
 export type ParenthesizedExpr = {
   type: "array";

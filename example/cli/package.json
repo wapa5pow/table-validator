@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node dist/index.js ../../test/test-data/schema.yaml ../../test/test-data/data.csv"
+    "start": "npm run build && node dist/index.js ../../test-data/schema.yaml ../../test-data/data.csv"
   },
   "keywords": [],
   "author": "",

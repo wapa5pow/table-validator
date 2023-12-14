@@ -12,11 +12,13 @@ nonCombinatorialExpr = nonConditionalExpr
 
 nonConditionalExpr = singleExpr / parenthesizedExpr
 
-singleExpr = notEmptyExpr / isExpr
+singleExpr = notEmptyExpr / isExpr / unique
 
 notEmptyExpr = "notEmpty" { return { type: 'notEmpty' }; }
 
 isExpr = "is(" value:stringProvider ")" { return { type: 'is', value: value }; }
+
+unique = "unique" { return { type: 'unique' }; }
 
 stringProvider = stringLiteral
 

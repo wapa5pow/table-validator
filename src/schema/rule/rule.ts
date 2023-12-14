@@ -19,10 +19,7 @@ export abstract class Rule {
   ): boolean;
 
   protected fail(columnIndex: number, row: Row): ValidationError {
-    const message = `${this.ruleName} fails for line: ${
-      row.lineNumber
-    }, column: ${columnIndex + 1}`;
-    return new ValidationError(message);
+    return new ValidationError(this.ruleName, row.lineNumber, columnIndex + 1);
   }
 
   get ruleName() {

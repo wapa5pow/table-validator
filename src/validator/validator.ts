@@ -1,18 +1,24 @@
 import { ColumnRule } from "../schema/parser/generated/grammar";
 import { IsRule } from "../schema/rule/is-rule";
 import { NotEmptyRule } from "../schema/rule/not-empty-rule";
+import { Rule } from "../schema/rule/rule";
+import { UniqueRule } from "../schema/rule/unique";
 import { Schema } from "../schema/schema";
 import { Row, Table } from "../table/table";
 import { ValidationError } from "./errors";
 
 export class Validator {
-  validate(table: Table, schema: Schema): ValidationError[] {
-    return table.rows.flatMap((row) => this.validateRow(row, schema));
+  // ruleMap is used to utilize the same instance of a rule for an identical columnRule.
+  // For instance, uniqueRule should maintain the column value while it scans the entire column.
+  private readonly ruleMap = new Map<ColumnRule, Rule>();
+
+  validate(table: Table, chema: Schema): ValidationError[] {
+    return table.rows.flatMap((row) => this.validateRow(row, chema));
   }
 
   private validateRow(row: Row, schema: Schema): ValidationError[] {
     const errors: ValidationError[] = [];
-    for (const columnIndex of row.cellValues.keys()) {
+    for (const columnIndex of Array.from(row.cellValues.keys())) {
       const columnRule = schema.columnRules[columnIndex];
       errors.push(...this.validateColumn(columnRule, columnIndex, row));
     }
@@ -46,22 +52,31 @@ export class Validator {
         ];
       }
       case "is": {
-        const isRule = new IsRule(columnRule.value);
-        const result = isRule.evaluate(columnIndex, row);
+        const rule =
+          this.ruleMap.get(columnRule) ?? new IsRule(columnRule.value);
+        this.ruleMap.set(columnRule, rule);
+        const result = rule.evaluate(columnIndex, row);
         return result.error == null ? [] : [result.error];
       }
       case "notEmpty": {
-        const notEmptyRule = new NotEmptyRule();
-        const result = notEmptyRule.evaluate(columnIndex, row);
+        const rule = this.ruleMap.get(columnRule) ?? new NotEmptyRule();
+        this.ruleMap.set(columnRule, rule);
+        const result = rule.evaluate(columnIndex, row);
         return result.error == null ? [] : [result.error];
       }
       case "array":
-        // and/orが書かれていない場合はandとして扱う
+        // If 'and/or' is not written, treat it as 'and'.
         return columnRule.values.flatMap((rule) =>
           this.validateColumn(rule, columnIndex, row),
         );
+      case "unique": {
+        const rule = this.ruleMap.get(columnRule) ?? new UniqueRule();
+        this.ruleMap.set(columnRule, rule);
+        const result = rule.evaluate(columnIndex, row);
+        return result.error == null ? [] : [result.error];
+      }
       default:
-        // caseに漏れがあった場合、エラーにする。
+        // missing case results in error.
         // https://zenn.dev/qnighy/articles/462baa685c80e2
         throw new Error(
           `Unknown type: ${(columnRule as { type: "__invalid__" }).type}`,

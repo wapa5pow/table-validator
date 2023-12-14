@@ -1,5 +1,5 @@
 import * as yaml from "yaml";
-import { ColumnRule, parse } from "../schema/parser/generated/grammar";
+import * as grammar from "../schema/parser/generated/grammar";
 import { Schema } from "./schema";
 
 interface Setting {
@@ -9,10 +9,10 @@ interface Setting {
   }[];
 }
 
-export function convertToSchema(content: string): Schema {
+export function convertToContentRule(content: string): Schema {
   const setting = yaml.parse(content) as Setting;
-  const rules: ColumnRule[] = setting.columns.map((column) =>
-    parse(column.rule),
+  const columnRules: grammar.ColumnRule[] = setting.columns.map((column) =>
+    grammar.parse(column.rule),
   );
-  return new Schema(rules);
+  return new Schema(columnRules);
 }

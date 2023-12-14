@@ -5,7 +5,9 @@
 	},
 	"files": {
 		"ignore": [
-			"src/parser/generated/grammar.ts"
+			"src/schema/parser/generated/grammar.ts",
+			"tsconfig.base.json",
+			"tsconfig.json"
 		]
 	},
 	"linter": {
@@ -13,7 +15,11 @@
 		"rules": {
 			"recommended": true,
 			"correctness": {
-				"noUnusedVariables": "warn"
+				"noUndeclaredVariables": "error",
+				"noUnusedVariables": "error"
+			},
+			"style": {
+				"noNamespace": "error"
 			}
 		}
 	},
