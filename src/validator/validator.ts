@@ -1,6 +1,7 @@
 import { ColumnValidationExpr } from "../schema/parser/generated/grammar";
 import { IsRule } from "../schema/rule/is-rule";
 import { NotEmptyRule } from "../schema/rule/not-empty-rule";
+import { RangeRule } from "../schema/rule/range-rule";
 import { Rule } from "../schema/rule/rule";
 import { UniqueRule } from "../schema/rule/unique";
 import { Schema } from "../schema/schema";
@@ -68,6 +69,13 @@ export class Validator {
         );
       case "unique": {
         const rule = this.ruleMap.get(expr) ?? new UniqueRule();
+        this.ruleMap.set(expr, rule);
+        const result = rule.evaluate(columnIndex, row);
+        return result.error == null ? [] : [result.error];
+      }
+      case "range": {
+        const rule =
+          this.ruleMap.get(expr) ?? new RangeRule(expr.min, expr.max);
         this.ruleMap.set(expr, rule);
         const result = rule.evaluate(columnIndex, row);
         return result.error == null ? [] : [result.error];
