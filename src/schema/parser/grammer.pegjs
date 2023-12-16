@@ -12,7 +12,7 @@ nonCombinatorialExpr = nonConditionalExpr
 
 nonConditionalExpr = singleExpr / parenthesizedExpr
 
-singleExpr = notEmptyExpr / emptyExpr / isExpr / notExp/ uniqueExpr / rangeExpr / lengthExpr / regExpExpr / integerExpr
+singleExpr = notEmptyExpr / emptyExpr / isExpr / notExp/ uniqueExpr / rangeExpr / lengthExpr / regExpExpr / integerExpr / floatExpr
 
 notEmptyExpr = "notEmpty" { return { type: 'notEmpty' }; }
 
@@ -31,6 +31,8 @@ lengthExpr = "length(" min:(value:positiveIntegerOrAny "," { return value; })? m
 regExpExpr = "regex(" value:stringLiteral ")" { return { type: 'regex', value: value }; }
 
 integerExpr = "integer" { return { type: 'integer' }; }
+
+floatExpr = "float" { return { type: 'float' }; }
 
 stringProvider = stringLiteral
 

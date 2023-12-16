@@ -223,5 +223,20 @@ describe("Validator", () => {
         expect(error[0].columnNumber).toBe(2);
       });
     });
+
+    describe("float", () => {
+      it("should return error if the column is invalid", () => {
+        const validator = new Validator();
+        const rule = "float";
+        const error = validator.validate(
+          new Table([new Row(1, ["0.5", "a"])]),
+          new Schema([rule, rule]),
+        );
+        expect(error.length).toBe(1);
+        expect(error[0].ruleName).toContain("float");
+        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].columnNumber).toBe(2);
+      });
+    });
   });
 });

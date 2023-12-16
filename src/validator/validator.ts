@@ -1,5 +1,6 @@
 import { ColumnValidationExpr } from "../schema/parser/generated/grammar";
 import { EmptyRule } from "../schema/rule/empty-rule";
+import { FloatRule } from "../schema/rule/float-rule";
 import { IntegerRule } from "../schema/rule/integer-rule";
 import { IsRule } from "../schema/rule/is-rule";
 import { LengthRule } from "../schema/rule/length-rule";
@@ -119,6 +120,8 @@ export class Validator {
         return this.evaluate(expr, columnIndex, row, new RegexRule(expr.value));
       case "integer":
         return this.evaluate(expr, columnIndex, row, new IntegerRule());
+      case "float":
+        return this.evaluate(expr, columnIndex, row, new FloatRule());
       default:
         // missing case results in error.
         // https://zenn.dev/qnighy/articles/462baa685c80e2
