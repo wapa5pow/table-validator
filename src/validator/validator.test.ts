@@ -208,5 +208,20 @@ describe("Validator", () => {
         expect(error[0].columnNumber).toBe(3);
       });
     });
+
+    describe("integer", () => {
+      it("should return error if the column is invalid", () => {
+        const validator = new Validator();
+        const rule = "integer";
+        const error = validator.validate(
+          new Table([new Row(1, ["0", "a"])]),
+          new Schema([rule, rule]),
+        );
+        expect(error.length).toBe(1);
+        expect(error[0].ruleName).toContain("integer");
+        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].columnNumber).toBe(2);
+      });
+    });
   });
 });
