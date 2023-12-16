@@ -24,7 +24,7 @@ notExp = "not(" value:stringProvider ")" { return { type: 'not', value: value };
 
 uniqueExpr = "unique" { return { type: 'unique' }; }
 
-rangeExpr = "range(" min:positiveIntegerOrAny "," max:positiveIntegerOrAny ")" { return { type: 'range', min: min, max: max, };}
+rangeExpr = "range(" min:integerLiteralOrAny "," max:integerLiteralOrAny ")" { return { type: 'range', min: min, max: max, };}
 
 lengthExpr = "length(" min:(value:positiveIntegerOrAny "," { return value; })? max:positiveIntegerOrAny ")" { return { type: 'length', min: min, max: max}; }
 
@@ -40,8 +40,12 @@ stringLiteral = '"' value:[^"]* '"' { return value.join(""); } // any character 
 
 positiveIntegerLiteral = value:[0-9]+ { return parseInt(value.join(""), 10); }
 
+integerLiteral = "-"?[0-9]+ { return parseInt(text(), 10); }
+
 wildcardLiteral = "*"
 
 positiveIntegerOrAny = positiveIntegerLiteral / wildcardLiteral
+
+integerLiteralOrAny = integerLiteral / wildcardLiteral
 
 parenthesizedExpr = "(" values:columnValidationExpr+ ")" { return { type: 'parentheses', values: values }; }

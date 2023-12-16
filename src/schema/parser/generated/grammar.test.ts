@@ -19,8 +19,11 @@ describe("Grammar Parser", () => {
 
   test.each([
     ["range(1,2)", [{ type: "range", min: 1, max: 2 }]],
+    ["range(-2,-1)", [{ type: "range", min: -2, max: -1 }]],
     ["range(*,2)", [{ type: "range", min: "*", max: 2 }]],
+    ["range(*,-2)", [{ type: "range", min: "*", max: -2 }]],
     ["range(1,*)", [{ type: "range", min: 1, max: "*" }]],
+    ["range(-1,*)", [{ type: "range", min: -1, max: "*" }]],
   ])("should parse %s", (value, expected) => {
     expect(parse(value)).toEqual(expected);
   });

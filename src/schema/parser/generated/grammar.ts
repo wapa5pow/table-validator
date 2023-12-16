@@ -316,8 +316,9 @@ function peg$parse(input, options) {
   var peg$c12 = "integer";
   var peg$c13 = "float";
   var peg$c14 = "\"";
-  var peg$c15 = "*";
-  var peg$c16 = "(";
+  var peg$c15 = "-";
+  var peg$c16 = "*";
+  var peg$c17 = "(";
 
   var peg$r0 = /^[^"]/;
   var peg$r1 = /^[0-9]/;
@@ -339,8 +340,9 @@ function peg$parse(input, options) {
   var peg$e14 = peg$literalExpectation("\"", false);
   var peg$e15 = peg$classExpectation(["\""], true, false);
   var peg$e16 = peg$classExpectation([["0", "9"]], false, false);
-  var peg$e17 = peg$literalExpectation("*", false);
-  var peg$e18 = peg$literalExpectation("(", false);
+  var peg$e17 = peg$literalExpectation("-", false);
+  var peg$e18 = peg$literalExpectation("*", false);
+  var peg$e19 = peg$literalExpectation("(", false);
 // @ts-ignore
 
   var peg$f0 = function(left, right) {// @ts-ignore
@@ -388,7 +390,10 @@ function peg$parse(input, options) {
   var peg$f14 = function(value) {// @ts-ignore
  return parseInt(value.join(""), 10); };// @ts-ignore
 
-  var peg$f15 = function(values) {// @ts-ignore
+  var peg$f15 = function() {// @ts-ignore
+ return parseInt(text(), 10); };// @ts-ignore
+
+  var peg$f16 = function(values) {// @ts-ignore
  return { type: 'parentheses', values: values }; };
 // @ts-ignore
   var peg$currPos = 0;
@@ -1177,7 +1182,7 @@ peg$parserangeExpr() {
 // @ts-ignore
     if (s1 !== peg$FAILED) {
 // @ts-ignore
-      s2 = peg$parsepositiveIntegerOrAny();
+      s2 = peg$parseintegerLiteralOrAny();
 // @ts-ignore
       if (s2 !== peg$FAILED) {
 // @ts-ignore
@@ -1196,7 +1201,7 @@ peg$parserangeExpr() {
 // @ts-ignore
         if (s3 !== peg$FAILED) {
 // @ts-ignore
-          s4 = peg$parsepositiveIntegerOrAny();
+          s4 = peg$parseintegerLiteralOrAny();
 // @ts-ignore
           if (s4 !== peg$FAILED) {
 // @ts-ignore
@@ -1674,6 +1679,90 @@ peg$parsepositiveIntegerLiteral() {
 
 // @ts-ignore
   function // @ts-ignore
+peg$parseintegerLiteral() {
+// @ts-ignore
+    var s0, s1, s2, s3;
+
+// @ts-ignore
+    s0 = peg$currPos;
+// @ts-ignore
+    if (input.charCodeAt(peg$currPos) === 45) {
+// @ts-ignore
+      s1 = peg$c15;
+// @ts-ignore
+      peg$currPos++;
+// @ts-ignore
+    } else {
+// @ts-ignore
+      s1 = peg$FAILED;
+// @ts-ignore
+      if (peg$silentFails === 0) { peg$fail(peg$e17); }
+    }
+// @ts-ignore
+    if (s1 === peg$FAILED) {
+// @ts-ignore
+      s1 = null;
+    }
+// @ts-ignore
+    s2 = [];
+// @ts-ignore
+    if (peg$r1.test(input.charAt(peg$currPos))) {
+// @ts-ignore
+      s3 = input.charAt(peg$currPos);
+// @ts-ignore
+      peg$currPos++;
+// @ts-ignore
+    } else {
+// @ts-ignore
+      s3 = peg$FAILED;
+// @ts-ignore
+      if (peg$silentFails === 0) { peg$fail(peg$e16); }
+    }
+// @ts-ignore
+    if (s3 !== peg$FAILED) {
+// @ts-ignore
+      while (s3 !== peg$FAILED) {
+// @ts-ignore
+        s2.push(s3);
+// @ts-ignore
+        if (peg$r1.test(input.charAt(peg$currPos))) {
+// @ts-ignore
+          s3 = input.charAt(peg$currPos);
+// @ts-ignore
+          peg$currPos++;
+// @ts-ignore
+        } else {
+// @ts-ignore
+          s3 = peg$FAILED;
+// @ts-ignore
+          if (peg$silentFails === 0) { peg$fail(peg$e16); }
+        }
+      }
+// @ts-ignore
+    } else {
+// @ts-ignore
+      s2 = peg$FAILED;
+    }
+// @ts-ignore
+    if (s2 !== peg$FAILED) {
+// @ts-ignore
+      peg$savedPos = s0;
+// @ts-ignore
+      s0 = peg$f15();
+// @ts-ignore
+    } else {
+// @ts-ignore
+      peg$currPos = s0;
+// @ts-ignore
+      s0 = peg$FAILED;
+    }
+
+// @ts-ignore
+    return s0;
+  }
+
+// @ts-ignore
+  function // @ts-ignore
 peg$parsewildcardLiteral() {
 // @ts-ignore
     var s0;
@@ -1681,7 +1770,7 @@ peg$parsewildcardLiteral() {
 // @ts-ignore
     if (input.charCodeAt(peg$currPos) === 42) {
 // @ts-ignore
-      s0 = peg$c15;
+      s0 = peg$c16;
 // @ts-ignore
       peg$currPos++;
 // @ts-ignore
@@ -1689,7 +1778,7 @@ peg$parsewildcardLiteral() {
 // @ts-ignore
       s0 = peg$FAILED;
 // @ts-ignore
-      if (peg$silentFails === 0) { peg$fail(peg$e17); }
+      if (peg$silentFails === 0) { peg$fail(peg$e18); }
     }
 
 // @ts-ignore
@@ -1716,6 +1805,24 @@ peg$parsepositiveIntegerOrAny() {
 
 // @ts-ignore
   function // @ts-ignore
+peg$parseintegerLiteralOrAny() {
+// @ts-ignore
+    var s0;
+
+// @ts-ignore
+    s0 = peg$parseintegerLiteral();
+// @ts-ignore
+    if (s0 === peg$FAILED) {
+// @ts-ignore
+      s0 = peg$parsewildcardLiteral();
+    }
+
+// @ts-ignore
+    return s0;
+  }
+
+// @ts-ignore
+  function // @ts-ignore
 peg$parseparenthesizedExpr() {
 // @ts-ignore
     var s0, s1, s2, s3;
@@ -1725,7 +1832,7 @@ peg$parseparenthesizedExpr() {
 // @ts-ignore
     if (input.charCodeAt(peg$currPos) === 40) {
 // @ts-ignore
-      s1 = peg$c16;
+      s1 = peg$c17;
 // @ts-ignore
       peg$currPos++;
 // @ts-ignore
@@ -1733,7 +1840,7 @@ peg$parseparenthesizedExpr() {
 // @ts-ignore
       s1 = peg$FAILED;
 // @ts-ignore
-      if (peg$silentFails === 0) { peg$fail(peg$e18); }
+      if (peg$silentFails === 0) { peg$fail(peg$e19); }
     }
 // @ts-ignore
     if (s1 !== peg$FAILED) {
@@ -1775,7 +1882,7 @@ peg$parseparenthesizedExpr() {
 // @ts-ignore
           peg$savedPos = s0;
 // @ts-ignore
-          s0 = peg$f15(s2);
+          s0 = peg$f16(s2);
 // @ts-ignore
         } else {
 // @ts-ignore
@@ -1961,8 +2068,8 @@ export type NotExp = { type: "not"; value: StringLiteral };
 export type UniqueExpr = { type: "unique" };
 export type RangeExpr = {
   type: "range";
-  min: PositiveIntegerOrAny;
-  max: PositiveIntegerOrAny;
+  min: IntegerLiteralOrAny;
+  max: IntegerLiteralOrAny;
 };
 export type LengthExpr = {
   type: "length";
@@ -1974,8 +2081,10 @@ export type IntegerExpr = { type: "integer" };
 export type FloatExpr = { type: "float" };
 export type StringLiteral = string;
 export type PositiveIntegerLiteral = number;
+export type IntegerLiteral = number;
 export type WildcardLiteral = "*";
 export type PositiveIntegerOrAny = PositiveIntegerLiteral | WildcardLiteral;
+export type IntegerLiteralOrAny = IntegerLiteral | WildcardLiteral;
 export type ParenthesizedExpr = {
   type: "parentheses";
   values: ColumnValidationExpr[];
