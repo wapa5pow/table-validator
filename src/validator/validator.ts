@@ -1,5 +1,6 @@
 import { ColumnValidationExpr } from "../schema/parser/generated/grammar";
 import { IsRule } from "../schema/rule/is-rule";
+import { LengthRule } from "../schema/rule/length-rule";
 import { NotEmptyRule } from "../schema/rule/not-empty-rule";
 import { RangeRule } from "../schema/rule/range-rule";
 import { Rule } from "../schema/rule/rule";
@@ -50,36 +51,31 @@ export class Validator {
           ...this.validateColumn(expr.right, columnIndex, row),
         ];
       }
-      case "is": {
-        const rule = this.ruleMap.get(expr) ?? new IsRule(expr.value);
-        this.ruleMap.set(expr, rule);
-        const result = rule.evaluate(columnIndex, row);
-        return result.error == null ? [] : [result.error];
-      }
-      case "notEmpty": {
-        const rule = this.ruleMap.get(expr) ?? new NotEmptyRule();
-        this.ruleMap.set(expr, rule);
-        const result = rule.evaluate(columnIndex, row);
-        return result.error == null ? [] : [result.error];
-      }
       case "array":
         // If 'and/or' is not written, treat it as 'and'.
         return expr.values.flatMap((rule) =>
           this.validateColumn(rule, columnIndex, row),
         );
-      case "unique": {
-        const rule = this.ruleMap.get(expr) ?? new UniqueRule();
-        this.ruleMap.set(expr, rule);
-        const result = rule.evaluate(columnIndex, row);
-        return result.error == null ? [] : [result.error];
-      }
-      case "range": {
-        const rule =
-          this.ruleMap.get(expr) ?? new RangeRule(expr.min, expr.max);
-        this.ruleMap.set(expr, rule);
-        const result = rule.evaluate(columnIndex, row);
-        return result.error == null ? [] : [result.error];
-      }
+      case "is":
+        return this.evaluate(expr, columnIndex, row, new IsRule(expr.value));
+      case "notEmpty":
+        return this.evaluate(expr, columnIndex, row, new NotEmptyRule());
+      case "unique":
+        return this.evaluate(expr, columnIndex, row, new UniqueRule());
+      case "range":
+        return this.evaluate(
+          expr,
+          columnIndex,
+          row,
+          new RangeRule(expr.min, expr.max),
+        );
+      case "length":
+        return this.evaluate(
+          expr,
+          columnIndex,
+          row,
+          new LengthRule(expr.min, expr.max),
+        );
       default:
         // missing case results in error.
         // https://zenn.dev/qnighy/articles/462baa685c80e2
@@ -87,5 +83,17 @@ export class Validator {
           `Unknown type: ${(expr as { type: "__invalid__" }).type}`,
         );
     }
+  }
+
+  private evaluate(
+    expr: ColumnValidationExpr,
+    columnIndex: number,
+    row: Row,
+    rule: Rule,
+  ): ValidationError[] {
+    const updateRule = this.ruleMap.get(expr) ?? rule;
+    this.ruleMap.set(expr, updateRule);
+    const result = updateRule.evaluate(columnIndex, row);
+    return result.error == null ? [] : [result.error];
   }
 }

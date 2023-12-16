@@ -12,7 +12,7 @@ nonCombinatorialExpr = nonConditionalExpr
 
 nonConditionalExpr = singleExpr / parenthesizedExpr
 
-singleExpr = notEmptyExpr / isExpr / uniqueExpr / rangeExpr
+singleExpr = notEmptyExpr / isExpr / uniqueExpr / rangeExpr / lengthExpr
 
 notEmptyExpr = "notEmpty" { return { type: 'notEmpty' }; }
 
@@ -22,11 +22,13 @@ uniqueExpr = "unique" { return { type: 'unique' }; }
 
 rangeExpr = "range(" min:positiveIntegerOrAny "," max:positiveIntegerOrAny ")" { return { type: 'range', min: min, max: max, };}
 
+lengthExpr = 	"length(" min:(value:positiveIntegerOrAny "," { return value; })? max:positiveIntegerOrAny ")" { return { type: 'length', min: min, max: max}; }
+
 stringProvider = stringLiteral
 
 stringLiteral = '"' value:[^"]* '"' { return value.join(""); } // any character except '"' 
 
-positiveIntegerLiteral = value:[0-9]+ { return value.join(""); }
+positiveIntegerLiteral = value:[0-9]+ { return parseInt(value.join(""), 10); }
 
 wildcardLiteral = "*"
 

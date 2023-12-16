@@ -3,21 +3,27 @@ import { Rule } from "./rule";
 export class RangeRule extends Rule {
   readonly baseName = "range";
 
-  constructor(private readonly min: string, private readonly max: string) {
+  constructor(
+    private readonly min: number | "*",
+    private readonly max: number | "*",
+  ) {
     super();
   }
 
   valid(cellValue: string): boolean {
+    const intValue = parseInt(cellValue, 10);
+    if (Number.isNaN(intValue)) {
+      return false;
+    }
+
     if (this.min !== "*") {
-      const minLength = parseInt(this.min, 10);
-      if (cellValue.length < minLength) {
+      if (intValue < this.min) {
         return false;
       }
     }
 
     if (this.max !== "*") {
-      const maxLength = parseInt(this.max, 10);
-      if (cellValue.length > maxLength) {
+      if (this.max < intValue) {
         return false;
       }
     }
