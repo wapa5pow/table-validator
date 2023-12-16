@@ -1,5 +1,9 @@
-import { ColumnRule } from "./parser/generated/grammar";
+import { ColumnRule, parse } from "./parser/generated/grammar";
 
 export class Schema {
-  constructor(readonly columnRules: ColumnRule[]) {}
+  readonly columnRules: ColumnRule[];
+
+  constructor(readonly rawRules: string[]) {
+    this.columnRules = rawRules.map((v) => parse(v));
+  }
 }

@@ -36,6 +36,6 @@ export class LengthRule extends Rule {
     if (this.min == null) {
       return `${this.baseName}(${this.max})`;
     }
-    return `${this.baseName}(${this.min}, ${this.max})`;
+    return `${this.baseName}(${this.min},${this.max})`;
   }
 }

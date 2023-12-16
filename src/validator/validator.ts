@@ -24,7 +24,10 @@ export class Validator {
     for (const columnIndex of Array.from(row.cellValues.keys())) {
       const columnRule = schema.columnRules[columnIndex];
       for (const expr of columnRule as ColumnValidationExpr[]) {
-        errors.push(...this.validateColumn(expr, columnIndex, row));
+        const error = this.validateColumn(expr, columnIndex, row);
+        if (error !== undefined) {
+          errors.push(error);
+        }
       }
     }
     return errors;
@@ -34,30 +37,57 @@ export class Validator {
     expr: ColumnValidationExpr,
     columnIndex: number,
     row: Row,
-  ): ValidationError[] {
+  ): ValidationError | undefined {
     switch (expr.type) {
       case "or": {
-        const leftErrors = this.validateColumn(expr.left, columnIndex, row);
-        if (leftErrors.length === 0) {
-          return [];
+        const leftError = this.validateColumn(expr.left, columnIndex, row);
+        if (leftError === undefined) {
+          return undefined;
         }
-        const rightErrors = this.validateColumn(expr.right, columnIndex, row);
-        if (rightErrors.length === 0) {
-          return [];
+        const rightError = this.validateColumn(expr.right, columnIndex, row);
+        if (rightError === undefined) {
+          return undefined;
         }
-        return [...leftErrors, ...rightErrors];
+        const errorRuleName = [leftError, rightError]
+          .map((e) => e.ruleName)
+          .join(" or ");
+        return new ValidationError(
+          `${errorRuleName}`,
+          row.lineNumber,
+          columnIndex,
+        );
       }
       case "and": {
-        return [
-          ...this.validateColumn(expr.left, columnIndex, row),
-          ...this.validateColumn(expr.right, columnIndex, row),
-        ];
-      }
-      case "array":
-        // If 'and/or' is not written, treat it as 'and'.
-        return expr.values.flatMap((rule) =>
-          this.validateColumn(rule, columnIndex, row),
+        const leftError = this.validateColumn(expr.left, columnIndex, row);
+        const rightError = this.validateColumn(expr.right, columnIndex, row);
+        if (leftError === undefined && rightError === undefined) {
+          return undefined;
+        }
+        const errorRuleName = [leftError, rightError]
+          .filter((v): v is NonNullable<typeof v> => v !== undefined)
+          .map((e) => e.ruleName)
+          .join(" and ");
+        return new ValidationError(
+          `${errorRuleName}`,
+          row.lineNumber,
+          columnIndex,
         );
+      }
+      case "array": {
+        // If 'and/or' is not written, treat it as 'and'.
+        const errors = expr.values
+          .map((rule) => this.validateColumn(rule, columnIndex, row))
+          .filter((v): v is NonNullable<typeof v> => v !== undefined);
+        if (errors.length === 0) {
+          return undefined;
+        }
+        const errorRuleName = errors.map((e) => e.ruleName).join(" ");
+        return new ValidationError(
+          `(${errorRuleName})`,
+          row.lineNumber,
+          columnIndex,
+        );
+      }
       case "is":
         return this.evaluate(expr, columnIndex, row, new IsRule(expr.value));
       case "notEmpty":
@@ -94,10 +124,10 @@ export class Validator {
     columnIndex: number,
     row: Row,
     rule: Rule,
-  ): ValidationError[] {
+  ): ValidationError | undefined {
     const updateRule = this.ruleMap.get(expr) ?? rule;
     this.ruleMap.set(expr, updateRule);
     const result = updateRule.evaluate(columnIndex, row);
-    return result.error == null ? [] : [result.error];
+    return result.error;
   }
 }

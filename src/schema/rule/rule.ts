@@ -19,7 +19,7 @@ export abstract class Rule {
   ): boolean;
 
   protected fail(columnIndex: number, row: Row): ValidationError {
-    return new ValidationError(this.ruleName, row.lineNumber, columnIndex + 1);
+    return new ValidationError(this.ruleName, row.lineNumber, columnIndex);
   }
 
   get ruleName() {

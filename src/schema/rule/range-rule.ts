@@ -31,6 +31,6 @@ export class RangeRule extends Rule {
   }
 
   get ruleName() {
-    return `${this.baseName}(${this.min}, ${this.max})`;
+    return `${this.baseName}(${this.min},${this.max})`;
   }
 }
