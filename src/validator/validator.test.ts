@@ -60,6 +60,34 @@ describe("Validator", () => {
       });
     });
 
+    describe("parentheses", () => {
+      it("should return error if the column is invalid", () => {
+        const validator = new Validator();
+        const rule = '(is("foo") or is("bar"))';
+        const error = validator.validate(
+          new Table([new Row(1, ["foo", "bar", "baz"])]),
+          new Schema([rule, rule, rule]),
+        );
+        expect(error.length).toBe(1);
+        expect(error[0].ruleName).toBe(rule);
+        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].columnNumber).toBe(3);
+      });
+
+      it("should return error if the column is invalid with complicated rule", () => {
+        const validator = new Validator();
+        const rule = '(is("foo") or is("bar")) and notEmpty';
+        const error = validator.validate(
+          new Table([new Row(1, ["foo", "bar", "baz"])]),
+          new Schema([rule, rule, rule]),
+        );
+        expect(error.length).toBe(1);
+        expect(error[0].ruleName).toBe('(is("foo") or is("bar"))');
+        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].columnNumber).toBe(3);
+      });
+    });
+
     describe("is", () => {
       it("should return error if the column is invalid", () => {
         const validator = new Validator();

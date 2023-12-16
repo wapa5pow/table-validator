@@ -369,7 +369,7 @@ function peg$parse(input, options) {
  return parseInt(value.join(""), 10); };// @ts-ignore
 
   var peg$f11 = function(values) {// @ts-ignore
- return { type: 'array', values: values }; };
+ return { type: 'parentheses', values: values }; };
 // @ts-ignore
   var peg$currPos = 0;
 // @ts-ignore
@@ -1752,6 +1752,6 @@ export type PositiveIntegerLiteral = number;
 export type WildcardLiteral = "*";
 export type PositiveIntegerOrAny = PositiveIntegerLiteral | WildcardLiteral;
 export type ParenthesizedExpr = {
-  type: "array";
+  type: "parentheses";
   values: ColumnValidationExpr[];
 };

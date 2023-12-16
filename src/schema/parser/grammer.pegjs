@@ -36,4 +36,4 @@ wildcardLiteral = "*"
 
 positiveIntegerOrAny = positiveIntegerLiteral / wildcardLiteral
 
-parenthesizedExpr = "(" values:columnValidationExpr+ ")" { return { type: 'array', values: values }; }
+parenthesizedExpr = "(" values:columnValidationExpr+ ")" { return { type: 'parentheses', values: values }; }

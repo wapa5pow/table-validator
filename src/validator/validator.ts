@@ -73,7 +73,7 @@ export class Validator {
           columnIndex,
         );
       }
-      case "array": {
+      case "parentheses": {
         // If 'and/or' is not written, treat it as 'and'.
         const errors = expr.values
           .map((rule) => this.validateColumn(rule, columnIndex, row))
