@@ -14,7 +14,7 @@ describe("NotEmptyRule", () => {
 
   describe("ruleName", () => {
     const rule = new NotEmptyRule();
-    test("returns notEmpty", () => {
+    test("returns ruleName", () => {
       expect(rule.ruleName).toBe("notEmpty");
     });
   });

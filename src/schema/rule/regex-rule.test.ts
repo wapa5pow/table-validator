@@ -22,7 +22,7 @@ describe("RegexRule", () => {
 
   describe("ruleName", () => {
     const rule = new RegexRule("foo");
-    test(`returns ${rule}`, () => {
+    test("returns ruleName", () => {
       expect(rule.ruleName).toBe('regex("foo")');
     });
   });
