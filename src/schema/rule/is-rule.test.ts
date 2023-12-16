@@ -3,7 +3,7 @@ import { IsRule } from "./is-rule";
 
 describe("isRule", () => {
   describe("valid", () => {
-    const rule = new IsRule("foo");
+    const rule = new IsRule({ type: "is", value: "foo" });
     test.each([
       ["foo", true],
       ["bar", false],
@@ -13,9 +13,9 @@ describe("isRule", () => {
   });
 
   describe("ruleName", () => {
-    const rule = new IsRule("foo");
+    const rule = new IsRule({ type: "is", value: "foo" });
     test("returns ruleName", () => {
-      expect(rule.ruleName).toBe('is("foo")');
+      expect(rule.name).toBe('is("foo")');
     });
   });
 });

@@ -1,7 +1,10 @@
+import { UniqueExpr } from "../parser/generated/grammar";
 import { Rule } from "./rule";
 
 export class UniqueRule extends Rule {
-  readonly baseName = "unique";
+  constructor(readonly expr: UniqueExpr) {
+    super();
+  }
 
   readonly values: Set<string> = new Set();
 

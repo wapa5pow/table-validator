@@ -93,35 +93,25 @@ export class Validator {
         );
       }
       case "is":
-        return this.evaluate(expr, columnIndex, row, new IsRule(expr.value));
+        return this.evaluate(expr, columnIndex, row, new IsRule(expr));
       case "not":
-        return this.evaluate(expr, columnIndex, row, new NotRule(expr.value));
+        return this.evaluate(expr, columnIndex, row, new NotRule(expr));
       case "notEmpty":
-        return this.evaluate(expr, columnIndex, row, new NotEmptyRule());
+        return this.evaluate(expr, columnIndex, row, new NotEmptyRule(expr));
       case "empty":
-        return this.evaluate(expr, columnIndex, row, new EmptyRule());
+        return this.evaluate(expr, columnIndex, row, new EmptyRule(expr));
       case "unique":
-        return this.evaluate(expr, columnIndex, row, new UniqueRule());
+        return this.evaluate(expr, columnIndex, row, new UniqueRule(expr));
       case "range":
-        return this.evaluate(
-          expr,
-          columnIndex,
-          row,
-          new RangeRule(expr.min, expr.max),
-        );
+        return this.evaluate(expr, columnIndex, row, new RangeRule(expr));
       case "length":
-        return this.evaluate(
-          expr,
-          columnIndex,
-          row,
-          new LengthRule(expr.min, expr.max),
-        );
+        return this.evaluate(expr, columnIndex, row, new LengthRule(expr));
       case "regex":
-        return this.evaluate(expr, columnIndex, row, new RegexRule(expr.value));
+        return this.evaluate(expr, columnIndex, row, new RegexRule(expr));
       case "integer":
-        return this.evaluate(expr, columnIndex, row, new IntegerRule());
+        return this.evaluate(expr, columnIndex, row, new IntegerRule(expr));
       case "float":
-        return this.evaluate(expr, columnIndex, row, new FloatRule());
+        return this.evaluate(expr, columnIndex, row, new FloatRule(expr));
       default:
         // missing case results in error.
         // https://zenn.dev/qnighy/articles/462baa685c80e2

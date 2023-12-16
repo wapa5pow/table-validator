@@ -1,9 +1,11 @@
 import { describe, expect, test } from "@jest/globals";
+import { NotExpr } from "../parser/generated/grammar";
 import { NotRule } from "./not-rule";
 
 describe("NotRule", () => {
+  const expr: NotExpr = { type: "not", value: "foo" };
   describe("valid", () => {
-    const rule = new NotRule("foo");
+    const rule = new NotRule(expr);
     test.each([
       ["foo", false],
       ["bar", true],
@@ -13,9 +15,9 @@ describe("NotRule", () => {
   });
 
   describe("ruleName", () => {
-    const rule = new NotRule("foo");
+    const rule = new NotRule(expr);
     test("returns ruleName", () => {
-      expect(rule.ruleName).toBe('not("foo")');
+      expect(rule.name).toBe('not("foo")');
     });
   });
 });

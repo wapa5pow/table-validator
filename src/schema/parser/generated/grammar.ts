@@ -870,7 +870,7 @@ peg$parsesingleExpr() {
 // @ts-ignore
         if (s0 === peg$FAILED) {
 // @ts-ignore
-          s0 = peg$parsenotExp();
+          s0 = peg$parsenotExpr();
 // @ts-ignore
           if (s0 === peg$FAILED) {
 // @ts-ignore
@@ -1053,7 +1053,7 @@ peg$parseisExpr() {
 
 // @ts-ignore
   function // @ts-ignore
-peg$parsenotExp() {
+peg$parsenotExpr() {
 // @ts-ignore
     var s0, s1, s2, s3;
 
@@ -2054,7 +2054,7 @@ export type SingleExpr =
   | NotEmptyExpr
   | EmptyExpr
   | IsExpr
-  | NotExp
+  | NotExpr
   | UniqueExpr
   | RangeExpr
   | LengthExpr
@@ -2064,7 +2064,7 @@ export type SingleExpr =
 export type NotEmptyExpr = { type: "notEmpty" };
 export type EmptyExpr = { type: "empty" };
 export type IsExpr = { type: "is"; value: StringLiteral };
-export type NotExp = { type: "not"; value: StringLiteral };
+export type NotExpr = { type: "not"; value: StringLiteral };
 export type UniqueExpr = { type: "unique" };
 export type RangeExpr = {
   type: "range";

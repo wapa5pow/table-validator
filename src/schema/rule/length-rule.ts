@@ -1,41 +1,37 @@
+import { LengthExpr } from "../parser/generated/grammar";
 import { Rule } from "./rule";
 
 export class LengthRule extends Rule {
-  readonly baseName = "length";
-
-  constructor(
-    private readonly min: number | "*" | null,
-    private readonly max: number | "*",
-  ) {
+  constructor(readonly expr: LengthExpr) {
     super();
   }
 
   valid(cellValue: string): boolean {
-    if (this.min == null && this.max === "*") {
+    if (this.expr.min == null && this.expr.max === "*") {
       return true;
     }
-    if (this.min === null) {
-      return cellValue.length === this.max;
+    if (this.expr.min === null) {
+      return cellValue.length === this.expr.max;
     }
 
-    if (this.min !== "*") {
-      if (cellValue.length < this.min) {
+    if (this.expr.min !== "*") {
+      if (cellValue.length < this.expr.min) {
         return false;
       }
     }
 
-    if (this.max !== "*") {
-      if (this.max < cellValue.length) {
+    if (this.expr.max !== "*") {
+      if (this.expr.max < cellValue.length) {
         return false;
       }
     }
     return true;
   }
 
-  get ruleName() {
-    if (this.min == null) {
-      return `${this.baseName}(${this.max})`;
+  get name() {
+    if (this.expr.min == null) {
+      return `${this.expr.type}(${this.expr.max})`;
     }
-    return `${this.baseName}(${this.min},${this.max})`;
+    return `${this.expr.type}(${this.expr.min},${this.expr.max})`;
   }
 }

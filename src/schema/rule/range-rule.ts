@@ -1,12 +1,8 @@
+import { RangeExpr } from "../parser/generated/grammar";
 import { Rule } from "./rule";
 
 export class RangeRule extends Rule {
-  readonly baseName = "range";
-
-  constructor(
-    private readonly min: number | "*",
-    private readonly max: number | "*",
-  ) {
+  constructor(readonly expr: RangeExpr) {
     super();
   }
 
@@ -16,21 +12,21 @@ export class RangeRule extends Rule {
       return false;
     }
 
-    if (this.min !== "*") {
-      if (intValue < this.min) {
+    if (this.expr.min !== "*") {
+      if (intValue < this.expr.min) {
         return false;
       }
     }
 
-    if (this.max !== "*") {
-      if (this.max < intValue) {
+    if (this.expr.max !== "*") {
+      if (this.expr.max < intValue) {
         return false;
       }
     }
     return true;
   }
 
-  get ruleName() {
-    return `${this.baseName}(${this.min},${this.max})`;
+  get name() {
+    return `${this.expr.type}(${this.expr.min},${this.expr.max})`;
   }
 }

@@ -1,16 +1,16 @@
+import { RegExpExpr } from "../parser/generated/grammar";
 import { Rule } from "./rule";
 
 export class RegexRule extends Rule {
-  readonly baseName = "regex";
   private readonly regex: RegExp;
 
-  constructor(private readonly argument: string) {
+  constructor(readonly expr: RegExpExpr) {
     super();
-    let regexString = argument;
-    if (!argument.startsWith("^")) {
+    let regexString = this.expr.value;
+    if (!regexString.startsWith("^")) {
       regexString = `^${regexString}`;
     }
-    if (!argument.endsWith("$")) {
+    if (!regexString.endsWith("$")) {
       regexString = `${regexString}$`;
     }
     this.regex = new RegExp(regexString);
@@ -20,7 +20,7 @@ export class RegexRule extends Rule {
     return this.regex.test(cellValue);
   }
 
-  get ruleName() {
-    return `${this.baseName}("${this.argument}")`;
+  get name() {
+    return `${this.expr.type}("${this.expr.value}")`;
   }
 }

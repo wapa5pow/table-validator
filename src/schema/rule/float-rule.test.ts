@@ -1,9 +1,12 @@
 import { describe, expect, test } from "@jest/globals";
+import { FloatExpr } from "../parser/generated/grammar";
 import { FloatRule } from "./float-rule";
 
 describe("FloatRule", () => {
+  const expr: FloatExpr = { type: "float" };
+
   describe("valid", () => {
-    const rule = new FloatRule();
+    const rule = new FloatRule(expr);
     test.each([
       ["0", true],
       ["123", true],
@@ -23,9 +26,9 @@ describe("FloatRule", () => {
   });
 
   describe("ruleName", () => {
-    const rule = new FloatRule();
+    const rule = new FloatRule(expr);
     test("returns ruleName", () => {
-      expect(rule.ruleName).toBe("float");
+      expect(rule.name).toBe("float");
     });
   });
 });

@@ -1,9 +1,11 @@
 import { describe, expect, test } from "@jest/globals";
+import { IntegerExpr } from "../parser/generated/grammar";
 import { IntegerRule } from "./integer-rule";
 
 describe("IntegerRule", () => {
+  const expr: IntegerExpr = { type: "integer" };
   describe("valid", () => {
-    const rule = new IntegerRule();
+    const rule = new IntegerRule(expr);
     test.each([
       ["0", true],
       ["123", true],
@@ -21,9 +23,9 @@ describe("IntegerRule", () => {
   });
 
   describe("ruleName", () => {
-    const rule = new IntegerRule();
+    const rule = new IntegerRule(expr);
     test("returns ruleName", () => {
-      expect(rule.ruleName).toBe("integer");
+      expect(rule.name).toBe("integer");
     });
   });
 });

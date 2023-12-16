@@ -1,7 +1,10 @@
+import { EmptyExpr } from "../parser/generated/grammar";
 import { Rule } from "./rule";
 
 export class EmptyRule extends Rule {
-  baseName = "empty";
+  constructor(readonly expr: EmptyExpr) {
+    super();
+  }
 
   valid(cellValue: string): boolean {
     return cellValue === "";

@@ -1,17 +1,16 @@
+import { NotExpr } from "../parser/generated/grammar";
 import { Rule } from "./rule";
 
 export class NotRule extends Rule {
-  readonly baseName = "not";
-
-  constructor(private readonly argument: string) {
+  constructor(readonly expr: NotExpr) {
     super();
   }
 
   valid(cellValue: string): boolean {
-    return cellValue !== this.argument;
+    return cellValue !== this.expr.value;
   }
 
-  get ruleName() {
-    return `${this.baseName}("${this.argument}")`;
+  get name() {
+    return `${this.expr.type}("${this.expr.value}")`;
   }
 }
