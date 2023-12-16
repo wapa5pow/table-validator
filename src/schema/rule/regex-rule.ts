@@ -6,7 +6,14 @@ export class RegexRule extends Rule {
 
   constructor(private readonly argument: string) {
     super();
-    this.regex = new RegExp(`^${argument}$`);
+    let regexString = argument;
+    if (!argument.startsWith("^")) {
+      regexString = `^${regexString}`;
+    }
+    if (!argument.endsWith("$")) {
+      regexString = `${regexString}$`;
+    }
+    this.regex = new RegExp(regexString);
   }
 
   valid(cellValue: string): boolean {

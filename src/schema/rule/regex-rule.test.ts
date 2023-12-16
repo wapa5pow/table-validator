@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { RegexRule } from "./ragex-rule";
+import { RegexRule } from "./regex-rule";
 
 describe("RegexRule", () => {
   describe("valid", () => {
@@ -13,6 +13,8 @@ describe("RegexRule", () => {
       [new RegexRule("[bcm]at"), "aat", false],
       [new RegexRule("[bcm]at"), "catt", false],
       [new RegexRule("[bcm]at"), "ccat", false],
+
+      [new RegexRule("^abc$"), "abc", true],
     ])("%s returns %s when %s", (rule, value, expected) => {
       expect(rule.valid(value)).toBe(expected);
     });
