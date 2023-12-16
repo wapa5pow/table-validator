@@ -33,6 +33,13 @@ describe("Grammar Parser", () => {
     expect(parse(value)).toEqual(expected);
   });
 
+  test.each([
+    ['regex("[bcm]at")', [{ type: "regex", value: "[bcm]at" }]],
+    ['regex("[0-5]")', [{ type: "regex", value: "[0-5]" }]],
+  ])("should parse %s", (value, expected) => {
+    expect(parse(value)).toEqual(expected);
+  });
+
   it("should throw syntax error for invalid input", () => {
     const input = "invalidRule";
 

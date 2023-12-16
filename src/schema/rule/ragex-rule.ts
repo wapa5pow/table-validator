@@ -1,14 +1,16 @@
 import { Rule } from "./rule";
 
-export class IsRule extends Rule {
-  readonly baseName = "is";
+export class RegexRule extends Rule {
+  readonly baseName = "regex";
+  private readonly regex: RegExp;
 
   constructor(private readonly argument: string) {
     super();
+    this.regex = new RegExp(`^${argument}$`);
   }
 
   valid(cellValue: string): boolean {
-    return cellValue === this.argument;
+    return this.regex.test(cellValue);
   }
 
   get ruleName() {

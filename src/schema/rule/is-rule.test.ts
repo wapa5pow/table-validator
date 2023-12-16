@@ -15,7 +15,7 @@ describe("isRule", () => {
   describe("ruleName", () => {
     const rule = new IsRule("foo");
     test("returns is(foo)", () => {
-      expect(rule.ruleName).toBe("is(foo)");
+      expect(rule.ruleName).toBe('is("foo")');
     });
   });
 });

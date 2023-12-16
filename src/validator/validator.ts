@@ -2,6 +2,7 @@ import { ColumnValidationExpr } from "../schema/parser/generated/grammar";
 import { IsRule } from "../schema/rule/is-rule";
 import { LengthRule } from "../schema/rule/length-rule";
 import { NotEmptyRule } from "../schema/rule/not-empty-rule";
+import { RegexRule } from "../schema/rule/ragex-rule";
 import { RangeRule } from "../schema/rule/range-rule";
 import { Rule } from "../schema/rule/rule";
 import { UniqueRule } from "../schema/rule/unique";
@@ -76,6 +77,8 @@ export class Validator {
           row,
           new LengthRule(expr.min, expr.max),
         );
+      case "regex":
+        return this.evaluate(expr, columnIndex, row, new RegexRule(expr.value));
       default:
         // missing case results in error.
         // https://zenn.dev/qnighy/articles/462baa685c80e2
