@@ -133,6 +133,21 @@ describe("Validator", () => {
       });
     });
 
+    describe("empty", () => {
+      it("should return error if the column is invalid", () => {
+        const validator = new Validator();
+        const rule = "empty";
+        const errors = validator.validate(
+          new Table([new Row(1, ["10", ""])]),
+          new Schema([rule, rule]),
+        );
+        expect(errors.length).toBe(1);
+        expect(errors[0].ruleName).toBe("empty");
+        expect(errors[0].lineNumber).toBe(1);
+        expect(errors[0].columnNumber).toBe(1);
+      });
+    });
+
     describe("unique", () => {
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
