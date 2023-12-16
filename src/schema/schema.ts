@@ -1,9 +1,24 @@
-import { ColumnRule, parse } from "./parser/generated/grammar";
+import { ParseGrammarError } from "./errors";
+import {
+  ColumnRule,
+  PeggySyntaxError,
+  parse,
+} from "./parser/generated/grammar";
 
 export class Schema {
   readonly columnRules: ColumnRule[];
 
   constructor(readonly rawRules: string[]) {
-    this.columnRules = rawRules.map((v) => parse(v));
+    this.columnRules = [];
+    for (let i = 0; i < rawRules.length; i++) {
+      try {
+        this.columnRules.push(parse(rawRules[i]));
+      } catch (error) {
+        if (error instanceof PeggySyntaxError) {
+          throw new ParseGrammarError(i, error.location.start.offset);
+        }
+        throw error;
+      }
+    }
   }
 }

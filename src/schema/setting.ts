@@ -8,7 +8,7 @@ interface Setting {
   }[];
 }
 
-export function convertToContentRule(content: string): Schema {
+export function convertToSchema(content: string): Schema {
   const setting = yaml.parse(content) as Setting;
   const rawRules = setting.columns.map((column) => column.rule);
   return new Schema(rawRules);

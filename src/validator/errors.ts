@@ -4,12 +4,12 @@ export class ValidationError extends Error {
   constructor(
     readonly ruleName: string,
     // 1-indexed line number
-    readonly lineNumber: number,
-    // 0-indexed column number
+    readonly line: number,
+    // 0-indexed column index
     readonly columnIndex: number,
   ) {
     const columnNumber = columnIndex + 1;
-    const message = `${ruleName} fails for line: ${lineNumber}, column: ${columnNumber}`;
+    const message = `${ruleName} fails for line: ${line}, column: ${columnNumber}`;
     super(message);
     this.columnNumber = columnNumber;
   }
