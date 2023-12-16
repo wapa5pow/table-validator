@@ -7,6 +7,7 @@ describe("IntegerRule", () => {
     test.each([
       ["0", true],
       ["123", true],
+      ["-123", true],
 
       ["0.5", false],
 
