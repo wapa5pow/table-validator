@@ -2,8 +2,8 @@ import { ColumnValidationExpr } from "../schema/parser/generated/grammar";
 import { IsRule } from "../schema/rule/is-rule";
 import { LengthRule } from "../schema/rule/length-rule";
 import { NotEmptyRule } from "../schema/rule/not-empty-rule";
-import { RegexRule } from "../schema/rule/ragex-rule";
 import { RangeRule } from "../schema/rule/range-rule";
+import { RegexRule } from "../schema/rule/regex-rule";
 import { Rule } from "../schema/rule/rule";
 import { UniqueRule } from "../schema/rule/unique";
 import { Schema } from "../schema/schema";
@@ -41,10 +41,11 @@ export class Validator {
         if (leftErrors.length === 0) {
           return [];
         }
-        return [
-          ...leftErrors,
-          ...this.validateColumn(expr.right, columnIndex, row),
-        ];
+        const rightErrors = this.validateColumn(expr.right, columnIndex, row);
+        if (rightErrors.length === 0) {
+          return [];
+        }
+        return [...leftErrors, ...rightErrors];
       }
       case "and": {
         return [
