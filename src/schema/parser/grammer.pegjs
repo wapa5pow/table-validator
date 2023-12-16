@@ -12,11 +12,13 @@ nonCombinatorialExpr = nonConditionalExpr
 
 nonConditionalExpr = singleExpr / parenthesizedExpr
 
-singleExpr = notEmptyExpr / isExpr / uniqueExpr / rangeExpr / lengthExpr / regExpExpr
+singleExpr = notEmptyExpr / isExpr / uniqueExpr / rangeExpr / lengthExpr / regExpExpr / notExp
 
 notEmptyExpr = "notEmpty" { return { type: 'notEmpty' }; }
 
 isExpr = "is(" value:stringProvider ")" { return { type: 'is', value: value }; }
+
+notExp = "not(" value:stringProvider ")" { return { type: 'not', value: value }; }
 
 uniqueExpr = "unique" { return { type: 'unique' }; }
 

@@ -103,6 +103,21 @@ describe("Validator", () => {
       });
     });
 
+    describe("not", () => {
+      it("should return error if the column is invalid", () => {
+        const validator = new Validator();
+        const rule = 'not("foo")';
+        const error = validator.validate(
+          new Table([new Row(1, ["foo", "bar"])]),
+          new Schema([rule, rule]),
+        );
+        expect(error.length).toBe(1);
+        expect(error[0].ruleName).toContain("not");
+        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].columnNumber).toBe(1);
+      });
+    });
+
     describe("notEmpty", () => {
       it("should return error if the column is invalid", () => {
         const validator = new Validator();

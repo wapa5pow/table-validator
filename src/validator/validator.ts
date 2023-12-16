@@ -2,6 +2,7 @@ import { ColumnValidationExpr } from "../schema/parser/generated/grammar";
 import { IsRule } from "../schema/rule/is-rule";
 import { LengthRule } from "../schema/rule/length-rule";
 import { NotEmptyRule } from "../schema/rule/not-empty-rule";
+import { NotRule } from "../schema/rule/not-rule";
 import { RangeRule } from "../schema/rule/range-rule";
 import { RegexRule } from "../schema/rule/regex-rule";
 import { Rule } from "../schema/rule/rule";
@@ -90,6 +91,8 @@ export class Validator {
       }
       case "is":
         return this.evaluate(expr, columnIndex, row, new IsRule(expr.value));
+      case "not":
+        return this.evaluate(expr, columnIndex, row, new NotRule(expr.value));
       case "notEmpty":
         return this.evaluate(expr, columnIndex, row, new NotEmptyRule());
       case "unique":
