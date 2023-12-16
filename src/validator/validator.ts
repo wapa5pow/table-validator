@@ -27,7 +27,7 @@ export class Validator {
     const errors: ValidationError[] = [];
     for (const columnIndex of Array.from(row.cellValues.keys())) {
       const columnRule = schema.columnRules[columnIndex];
-      for (const expr of columnRule as ColumnValidationExpr[]) {
+      for (const expr of columnRule) {
         const error = this.validateColumn(expr, columnIndex, row);
         if (error !== undefined) {
           errors.push(error);
