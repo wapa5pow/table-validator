@@ -7,7 +7,7 @@ export class RuleParseError extends Error {
     // 0-indexed offset on line
     readonly offset: number,
   ) {
-    const message = `parse fails for column: ${columnIndex}, location: ${
+    const message = `RuleParseError: parse fails for column: ${columnIndex}, location: ${
       offset + 1
     }`;
     super(message);
@@ -23,7 +23,7 @@ export class YamlParseError extends Error {
     readonly column: number | undefined,
     readonly message: string,
   ) {
-    super(message);
+    super(`YamlParseError: ${message}`);
   }
 }
 
@@ -35,6 +35,6 @@ export class YamlFieldError extends Error {
     readonly field: string,
     readonly message: string,
   ) {
-    super();
+    super(`YamlFieldError: ${message}`);
   }
 }

@@ -9,7 +9,7 @@ export class ValidationError extends Error {
     readonly columnIndex: number,
   ) {
     const columnNumber = columnIndex + 1;
-    const message = `${name} fails for line: ${line}, column: ${columnNumber}`;
+    const message = `ValidationError: ${name} fails for line: ${line}, column: ${columnNumber}`;
     super(message);
     this.columnNumber = columnNumber;
   }

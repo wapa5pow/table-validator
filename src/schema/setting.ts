@@ -53,7 +53,7 @@ export function convertToSchema(content: string): Schema {
         error.code,
         line,
         column,
-        `parse fails for line: ${line}, column: ${column}}`,
+        `parse fails for line: ${line}, column: ${column}`,
       );
     }
     throw error;
