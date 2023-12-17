@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { ParseGrammarError } from "./errors";
+import { RuleParseError } from "./errors";
 import { Schema } from "./schema";
 describe("Schema", () => {
   describe("constructor", () => {
@@ -12,8 +12,8 @@ describe("Schema", () => {
       try {
         new Schema(["length()"]);
       } catch (error) {
-        expect(error).toBeInstanceOf(ParseGrammarError);
-        expect(error).toStrictEqual(new ParseGrammarError(0, 7));
+        expect(error).toBeInstanceOf(RuleParseError);
+        expect(error).toStrictEqual(new RuleParseError(0, 7));
       }
     });
   });

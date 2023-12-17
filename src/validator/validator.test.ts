@@ -26,8 +26,8 @@ describe("Validator", () => {
           new Schema([rule, rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toBe(rule);
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toBe(rule);
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
       });
     });
@@ -41,8 +41,8 @@ describe("Validator", () => {
           new Schema([rule, rule, rule]),
         );
         expect(errors.length).toBe(1);
-        expect(errors[0].ruleName).toBe("range(10,20)");
-        expect(errors[0].lineNumber).toBe(1);
+        expect(errors[0].name).toBe("range(10,20)");
+        expect(errors[0].line).toBe(1);
         expect(errors[0].columnNumber).toBe(3);
       });
 
@@ -54,8 +54,8 @@ describe("Validator", () => {
           new Schema([rule, rule, rule]),
         );
         expect(errors.length).toBe(1);
-        expect(errors[0].ruleName).toBe(rule);
-        expect(errors[0].lineNumber).toBe(1);
+        expect(errors[0].name).toBe(rule);
+        expect(errors[0].line).toBe(1);
         expect(errors[0].columnNumber).toBe(3);
       });
     });
@@ -69,8 +69,8 @@ describe("Validator", () => {
           new Schema([rule, rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toBe(rule);
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toBe(rule);
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
       });
 
@@ -82,8 +82,8 @@ describe("Validator", () => {
           new Schema([rule, rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toBe('(is("foo") or is("bar"))');
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toBe('(is("foo") or is("bar"))');
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
       });
     });
@@ -97,8 +97,8 @@ describe("Validator", () => {
           new Schema([rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toContain("is");
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toContain("is");
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(2);
       });
     });
@@ -112,8 +112,8 @@ describe("Validator", () => {
           new Schema([rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toContain("not");
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toContain("not");
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(1);
       });
     });
@@ -127,8 +127,8 @@ describe("Validator", () => {
           new Schema([rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toBe("notEmpty");
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toBe("notEmpty");
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(2);
       });
     });
@@ -142,8 +142,8 @@ describe("Validator", () => {
           new Schema([rule, rule]),
         );
         expect(errors.length).toBe(1);
-        expect(errors[0].ruleName).toBe("empty");
-        expect(errors[0].lineNumber).toBe(1);
+        expect(errors[0].name).toBe("empty");
+        expect(errors[0].line).toBe(1);
         expect(errors[0].columnNumber).toBe(1);
       });
     });
@@ -158,8 +158,8 @@ describe("Validator", () => {
           new Schema([rule1, rule2]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toBe("unique");
-        expect(error[0].lineNumber).toBe(2);
+        expect(error[0].name).toBe("unique");
+        expect(error[0].line).toBe(2);
         expect(error[0].columnNumber).toBe(2);
       });
     });
@@ -173,8 +173,8 @@ describe("Validator", () => {
           new Schema([rule, rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toContain("range");
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toContain("range");
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
       });
     });
@@ -188,8 +188,8 @@ describe("Validator", () => {
           new Schema([rule, rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toContain("length");
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toContain("length");
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(1);
       });
     });
@@ -203,8 +203,8 @@ describe("Validator", () => {
           new Schema([rule, rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toContain("regex");
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toContain("regex");
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
       });
     });
@@ -218,8 +218,8 @@ describe("Validator", () => {
           new Schema([rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toContain("integer");
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toContain("integer");
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(2);
       });
     });
@@ -233,8 +233,8 @@ describe("Validator", () => {
           new Schema([rule, rule]),
         );
         expect(error.length).toBe(1);
-        expect(error[0].ruleName).toContain("float");
-        expect(error[0].lineNumber).toBe(1);
+        expect(error[0].name).toContain("float");
+        expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(2);
       });
     });

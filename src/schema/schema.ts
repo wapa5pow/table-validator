@@ -1,4 +1,4 @@
-import { ParseGrammarError } from "./errors";
+import { RuleParseError } from "./errors";
 import {
   ColumnRule,
   PeggySyntaxError,
@@ -15,7 +15,7 @@ export class Schema {
         this.columnRules.push(parse(rawRules[i]));
       } catch (error) {
         if (error instanceof PeggySyntaxError) {
-          throw new ParseGrammarError(i, error.location.start.offset);
+          throw new RuleParseError(i, error.location.start.offset);
         }
         throw error;
       }
