@@ -1,10 +1,83 @@
 import { describe, expect, it } from "@jest/globals";
 import { Schema } from "../schema/schema";
-import { Row, Table } from "../table/table";
+import { convertToSchema } from "../schema/setting";
+import { Row, Table, convertToTable } from "../table/table";
 import { Validator } from "./validator";
 
 describe("Validator", () => {
   describe("validate", () => {
+    describe("complicated rules", () => {
+      const yamlValue = `
+columns:
+  - id: id
+    rule: notEmpty and unique
+  - id: country
+    rule: is("China") or is("Japan") or is("Russia")
+  - id: capital
+    rule:
+  - id: population
+    rule: range(0,*)
+`;
+
+      it("should be valid", () => {
+        const csvValue = `
+id,country,capital,population
+1,China,Beijing,21542000
+2,Japan,Tokyo,14094034
+3,Russia,Moscow,13104177
+`;
+
+        const schema = convertToSchema(yamlValue);
+        const table = convertToTable(csvValue, true);
+        const validator = new Validator();
+        const errors = validator.validate(table, schema);
+        expect(errors).toHaveLength(0);
+      });
+
+      it('should return error if the column is invalid for "unique"', () => {
+        const csvValue = `
+id,country,capital,population
+1,China,Beijing,21542000
+1,China,Beijing,21542000
+`;
+
+        const schema = convertToSchema(yamlValue);
+        const table = convertToTable(csvValue, true);
+        const validator = new Validator();
+        const errors = validator.validate(table, schema);
+        expect(errors).toHaveLength(1);
+        expect(errors[0].name).toBe("unique");
+      });
+    });
+
+    describe("table foramt error", () => {
+      it("should return error if the table column number does not match column rule numbers", () => {
+        const yamlValue = `
+columns:
+  - id: id
+    rule: notEmpty and unique
+  - id: country
+    rule: is("China") or is("Japan") or is("Russia")
+  - id: capital
+    rule:
+  - id: population
+    rule: range(0,*)`;
+
+        const csvValue = `
+id,country,capital,population
+1,China,Beijing,21542000
+2,Japan,Tokyo
+3,Russia,Moscow,13104177
+`;
+
+        const schema = convertToSchema(yamlValue);
+        const table = convertToTable(csvValue, true);
+        const validator = new Validator();
+        const errors = validator.validate(table, schema);
+        expect(errors).toHaveLength(1);
+      });
+    });
+
     describe("no rule", () => {
       it("should return empty error", () => {
         const validator = new Validator();
@@ -13,7 +86,7 @@ describe("Validator", () => {
           new Table([new Row(1, [""])]),
           new Schema([rule]),
         );
-        expect(error.length).toBe(0);
+        expect(error).toHaveLength(0);
       });
     });
 
@@ -25,7 +98,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["foo", "bar", "baz"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toBe(rule);
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
@@ -40,7 +113,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["10", "20", "21"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(errors.length).toBe(1);
+        expect(errors).toHaveLength(1);
         expect(errors[0].name).toBe("range(10,20)");
         expect(errors[0].line).toBe(1);
         expect(errors[0].columnNumber).toBe(3);
@@ -53,7 +126,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["10", "20", "1"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(errors.length).toBe(1);
+        expect(errors).toHaveLength(1);
         expect(errors[0].name).toBe(rule);
         expect(errors[0].line).toBe(1);
         expect(errors[0].columnNumber).toBe(3);
@@ -68,7 +141,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["foo", "bar", "baz"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toBe(rule);
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
@@ -81,7 +154,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["foo", "bar", "baz"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toBe('(is("foo") or is("bar"))');
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
@@ -96,7 +169,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["foo", "bar"])]),
           new Schema([rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toContain("is");
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(2);
@@ -111,7 +184,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["foo", "bar"])]),
           new Schema([rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toContain("not");
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(1);
@@ -126,7 +199,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["10", ""])]),
           new Schema([rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toBe("notEmpty");
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(2);
@@ -141,7 +214,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["10", ""])]),
           new Schema([rule, rule]),
         );
-        expect(errors.length).toBe(1);
+        expect(errors).toHaveLength(1);
         expect(errors[0].name).toBe("empty");
         expect(errors[0].line).toBe(1);
         expect(errors[0].columnNumber).toBe(1);
@@ -157,7 +230,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["10", "20"]), new Row(2, ["11", "20"])]),
           new Schema([rule1, rule2]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toBe("unique");
         expect(error[0].line).toBe(2);
         expect(error[0].columnNumber).toBe(2);
@@ -172,7 +245,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["10", "20", "30"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toContain("range");
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
@@ -187,7 +260,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["a", "ab", "abc"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toContain("length");
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(1);
@@ -202,7 +275,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["bat", "cat", "rat"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toContain("regex");
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(3);
@@ -217,7 +290,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["0", "a"])]),
           new Schema([rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toContain("integer");
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(2);
@@ -232,7 +305,7 @@ describe("Validator", () => {
           new Table([new Row(1, ["0.5", "a"])]),
           new Schema([rule, rule]),
         );
-        expect(error.length).toBe(1);
+        expect(error).toHaveLength(1);
         expect(error[0].name).toContain("float");
         expect(error[0].line).toBe(1);
         expect(error[0].columnNumber).toBe(2);

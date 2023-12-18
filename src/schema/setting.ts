@@ -5,7 +5,7 @@ import { Schema } from "./schema";
 interface Setting {
   readonly columns: {
     readonly id: string;
-    readonly rule: string;
+    readonly rule: string | null;
   }[];
 }
 
@@ -59,6 +59,6 @@ export function convertToSchema(content: string): Schema {
     throw error;
   }
   validateSetting(setting);
-  const rawRules = setting.columns.map((column) => column.rule);
+  const rawRules = setting.columns.map((column) => column.rule ?? "");
   return new Schema(rawRules);
 }

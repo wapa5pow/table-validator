@@ -1,6 +1,5 @@
 import * as papa from "papaparse";
 
-// バリデーション対象のテーブル全体を表すクラス
 export class Table {
   constructor(readonly rows: Row[]) {}
 }
@@ -10,7 +9,10 @@ export class Row {
 }
 
 export function convertToTable(content: string, hasHeader: boolean) {
-  const csv = papa.parse<string[]>(content, { header: false });
+  const csv = papa.parse<string[]>(content, {
+    header: false,
+    skipEmptyLines: true,
+  });
   if (hasHeader) {
     csv.data.shift();
   }

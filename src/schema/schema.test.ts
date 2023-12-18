@@ -1,11 +1,19 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, test } from "@jest/globals";
 import { RuleParseError } from "./errors";
 import { Schema } from "./schema";
 describe("Schema", () => {
   describe("constructor", () => {
-    it("should parse the rule", () => {
-      const schema = new Schema(["length(5)"]);
-      expect(schema.columnRules).toHaveLength(1);
+    describe("success", () => {
+      test.each([
+        ["length(5)", 1],
+        ['is("a") or is("b")', 1],
+        ["notEmpty and unique", 1],
+        ["", 1],
+      ])("returns %s when %s", (value, expected) => {
+        const schema = new Schema([value]);
+        expect(schema.columnRules).toHaveLength(expected);
+      });
+      it("should parse the rule", () => {});
     });
 
     it("should throw error if the rule is invalid", () => {

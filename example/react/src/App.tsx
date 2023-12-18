@@ -10,25 +10,27 @@ import {
 import React from "react";
 import "./App.css";
 
-const defaultYaml = `
+function format(value: string): string {
+  return value.replace(/^\n/, "").replace(/\n$/, "");
+}
+
+const defaultYaml = format(`
 columns:
   - id: id
-    rule: notEmpty unique
-  - id: 都道府県
-    rule: is("東京都") or is("神奈川県") or is("大阪府")
-  - id: 県庁所在地
-    rule: integer
-`
-  .replace(/^\n/, "")
-  .replace(/\n$/, "");
-const defaultCsv = `
-id,都道府県,県庁所在地,人口
-1,東京都,東京23区,9272740
-2,神奈川,横浜市,3724840.5
-3,大阪府,大阪市,2691185
-`
-  .replace(/^\n/, "")
-  .replace(/\n$/, "");
+    rule: notEmpty and unique
+  - id: country
+    rule: is("China") or is("Japan") or is("Russia")
+  - id: capital
+    rule:
+  - id: population
+    rule: integer and range(0,*)
+`);
+const defaultCsv = format(`
+id,country,capital,population
+1,China,Beijing,21542000
+2,Japan,Tokyo,14094034.5
+3,Russia,Moscow,13104177
+`);
 
 function App() {
   const [yamlValue, setYamlValue] = React.useState(defaultYaml);
@@ -56,16 +58,19 @@ function App() {
       setYamlError(`${err}`);
       return;
     }
+    console.log(JSON.stringify(schema));
     try {
       table = convertToTable(csvValue, true);
     } catch (err) {
       setCsvError(`${err}`);
       return;
     }
+    console.log(JSON.stringify(table));
 
     try {
       const validator = new Validator();
       const errors: ValidationError[] = validator.validate(table, schema);
+      console.log(errors);
       if (errors.length === 0) {
         setIsValid(true);
       } else {

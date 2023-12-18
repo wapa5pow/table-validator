@@ -25,15 +25,32 @@ export class Validator {
 
   private validateRow(row: Row, schema: Schema): ValidationError[] {
     const errors: ValidationError[] = [];
-    for (const columnIndex of Array.from(row.cellValues.keys())) {
+    for (const columnIndex of Array.from(schema.columnRules.keys())) {
+      const cellValue = row.cellValues[columnIndex];
+      if (cellValue === undefined) {
+        errors.push(
+          new ValidationError(
+            "missing column",
+            cellValue,
+            row.lineNumber,
+            columnIndex,
+          ),
+        );
+        continue;
+      }
       const columnRule = schema.columnRules[columnIndex];
-      for (const expr of columnRule) {
+      if (columnRule === undefined) {
+        continue;
+      }
+      const exprs: ColumnValidationExpr[] = Array.from(columnRule);
+      for (const expr of exprs) {
         const error = this.validateColumn(expr, columnIndex, row);
         if (error !== undefined) {
           errors.push(error);
         }
       }
     }
+
     return errors;
   }
 
