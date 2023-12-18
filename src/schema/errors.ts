@@ -7,9 +7,9 @@ export class RuleParseError extends Error {
     // 0-indexed offset on line
     readonly offset: number,
   ) {
-    const message = `RuleParseError: parse fails for column: ${columnIndex}, location: ${
-      offset + 1
-    }`;
+    const message = `RuleParseError: parse fails for column: ${
+      columnIndex + 1
+    }, location: ${offset + 1}`;
     super(message);
   }
 }

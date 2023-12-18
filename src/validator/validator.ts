@@ -57,6 +57,7 @@ export class Validator {
           .join(" or ");
         return new ValidationError(
           `${errorRuleName}`,
+          row.cellValues[columnIndex],
           row.lineNumber,
           columnIndex,
         );
@@ -73,6 +74,7 @@ export class Validator {
           .join(" and ");
         return new ValidationError(
           `${errorRuleName}`,
+          row.cellValues[columnIndex],
           row.lineNumber,
           columnIndex,
         );
@@ -88,6 +90,7 @@ export class Validator {
         const errorRuleName = errors.map((e) => e.name).join(" ");
         return new ValidationError(
           `(${errorRuleName})`,
+          row.cellValues[columnIndex],
           row.lineNumber,
           columnIndex,
         );

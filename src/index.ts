@@ -1,5 +1,14 @@
+import { Schema } from "./schema/schema";
 import { convertToSchema } from "./schema/setting";
-import { convertToTable } from "./table/table";
+import { Table, convertToTable } from "./table/table";
+import { ValidationError } from "./validator/errors";
 import { Validator } from "./validator/validator";
 
-export { Validator, convertToSchema, convertToTable };
+export {
+  Schema,
+  Table,
+  ValidationError,
+  Validator,
+  convertToSchema,
+  convertToTable,
+};

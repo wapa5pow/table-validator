@@ -20,7 +20,12 @@ export abstract class Rule {
   ): boolean;
 
   protected fail(columnIndex: number, row: Row): ValidationError {
-    return new ValidationError(this.name, row.lineNumber, columnIndex);
+    return new ValidationError(
+      this.name,
+      row.cellValues[columnIndex],
+      row.lineNumber,
+      columnIndex,
+    );
   }
 
   get name(): string {
