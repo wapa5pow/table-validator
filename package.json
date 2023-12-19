@@ -1,7 +1,11 @@
 {
   "name": "table-validator",
-  "version": "0.0.3",
-  "description": "Content Validator",
+  "version": "0.0.4",
+  "description": "Table Validator for CSV",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wapa5pow/table-validator.git"
+  },
   "main": "index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -11,7 +15,7 @@
     "react": "npm run build && cd example/react && npm install && npm run start",
     "cli": "npm run build && cd example/cli && npm install && npm run start",
     "lint": "biome lint src",
-    "deploy": "cd example/react && npm run build && npm run deploy",
+    "deployPages": "cd example/react && npm run build && npm run deploy",
     "test": "jest"
   },
   "keywords": [
