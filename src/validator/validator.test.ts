@@ -2,6 +2,7 @@ import { describe, expect, it } from "@jest/globals";
 import { Schema } from "../schema/schema";
 import { convertToSchema } from "../schema/setting";
 import { Row, Table, convertToTable } from "../table/table";
+import { ValidationRuleError } from "./errors";
 import { Validator } from "./validator";
 
 describe("Validator", () => {
@@ -46,7 +47,7 @@ id,country,capital,population
         const validator = new Validator();
         const errors = validator.validate(table, schema);
         expect(errors).toHaveLength(1);
-        expect(errors[0].name).toBe("unique");
+        expect(errors[0].name).toContain("unique");
       });
     });
 
@@ -75,6 +76,7 @@ id,country,capital,population
         const validator = new Validator();
         const errors = validator.validate(table, schema);
         expect(errors).toHaveLength(1);
+        expect(errors[0].message).toContain("ColumnMissmatchError");
       });
     });
 
@@ -94,14 +96,15 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = 'is("foo") or is("bar")';
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["foo", "bar", "baz"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toBe(rule);
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(3);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toBe(rule);
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(3);
       });
     });
 
@@ -114,9 +117,10 @@ id,country,capital,population
           new Schema([rule, rule, rule]),
         );
         expect(errors).toHaveLength(1);
-        expect(errors[0].name).toBe("range(10,20)");
-        expect(errors[0].line).toBe(1);
-        expect(errors[0].columnNumber).toBe(3);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toBe("range(10,20)");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(3);
       });
 
       it("should return error if the column is invalid for both and rules", () => {
@@ -127,9 +131,10 @@ id,country,capital,population
           new Schema([rule, rule, rule]),
         );
         expect(errors).toHaveLength(1);
-        expect(errors[0].name).toBe(rule);
-        expect(errors[0].line).toBe(1);
-        expect(errors[0].columnNumber).toBe(3);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toBe(rule);
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(3);
       });
     });
 
@@ -137,27 +142,29 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = '(is("foo") or is("bar"))';
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["foo", "bar", "baz"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toBe(rule);
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(3);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toBe(rule);
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(3);
       });
 
       it("should return error if the column is invalid with complicated rule", () => {
         const validator = new Validator();
         const rule = '(is("foo") or is("bar")) and notEmpty';
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["foo", "bar", "baz"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toBe('(is("foo") or is("bar"))');
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(3);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toBe('(is("foo") or is("bar"))');
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(3);
       });
     });
 
@@ -165,14 +172,15 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = 'is("foo")';
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["foo", "bar"])]),
           new Schema([rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toContain("is");
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(2);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toContain("is");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(2);
       });
     });
 
@@ -180,14 +188,15 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = 'not("foo")';
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["foo", "bar"])]),
           new Schema([rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toContain("not");
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(1);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toContain("not");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(1);
       });
     });
 
@@ -195,14 +204,15 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = "notEmpty";
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["10", ""])]),
           new Schema([rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toBe("notEmpty");
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(2);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toBe("notEmpty");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(2);
       });
     });
 
@@ -215,9 +225,10 @@ id,country,capital,population
           new Schema([rule, rule]),
         );
         expect(errors).toHaveLength(1);
-        expect(errors[0].name).toBe("empty");
-        expect(errors[0].line).toBe(1);
-        expect(errors[0].columnNumber).toBe(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toBe("empty");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(1);
       });
     });
 
@@ -226,14 +237,15 @@ id,country,capital,population
         const validator = new Validator();
         const rule1 = "unique";
         const rule2 = "unique";
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["10", "20"]), new Row(2, ["11", "20"])]),
           new Schema([rule1, rule2]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toBe("unique");
-        expect(error[0].line).toBe(2);
-        expect(error[0].columnNumber).toBe(2);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toBe("unique");
+        expect(error.line).toBe(2);
+        expect(error.columnNumber).toBe(2);
       });
     });
 
@@ -241,14 +253,15 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = "range(10,20)";
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["10", "20", "30"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toContain("range");
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(3);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toContain("range");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(3);
       });
     });
 
@@ -256,14 +269,15 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = "length(2,3)";
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["a", "ab", "abc"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toContain("length");
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(1);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toContain("length");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(1);
       });
     });
 
@@ -271,14 +285,15 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = 'regex("[bcm]at")';
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["bat", "cat", "rat"])]),
           new Schema([rule, rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toContain("regex");
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(3);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toContain("regex");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(3);
       });
     });
 
@@ -286,14 +301,15 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = "integer";
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["0", "a"])]),
           new Schema([rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toContain("integer");
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(2);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toContain("integer");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(2);
       });
     });
 
@@ -301,14 +317,15 @@ id,country,capital,population
       it("should return error if the column is invalid", () => {
         const validator = new Validator();
         const rule = "float";
-        const error = validator.validate(
+        const errors = validator.validate(
           new Table([new Row(1, ["0.5", "a"])]),
           new Schema([rule, rule]),
         );
-        expect(error).toHaveLength(1);
-        expect(error[0].name).toContain("float");
-        expect(error[0].line).toBe(1);
-        expect(error[0].columnNumber).toBe(2);
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.name).toContain("float");
+        expect(error.line).toBe(1);
+        expect(error.columnNumber).toBe(2);
       });
     });
   });

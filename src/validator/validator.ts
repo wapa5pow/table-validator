@@ -12,7 +12,11 @@ import { Rule } from "../schema/rule/rule";
 import { UniqueRule } from "../schema/rule/unique";
 import { Schema } from "../schema/schema";
 import { Row, Table } from "../table/table";
-import { ValidationError } from "./errors";
+import {
+  ColumnMissmatchError,
+  ValidationError,
+  ValidationRuleError,
+} from "./errors";
 
 export class Validator {
   // ruleMap is used to utilize the same instance of a rule for an identical columnRule.
@@ -25,19 +29,11 @@ export class Validator {
 
   private validateRow(row: Row, schema: Schema): ValidationError[] {
     const errors: ValidationError[] = [];
+    if (row.cellValues.length !== schema.columnRules.length) {
+      errors.push(new ColumnMissmatchError(row.lineNumber));
+      return errors;
+    }
     for (const columnIndex of Array.from(schema.columnRules.keys())) {
-      const cellValue = row.cellValues[columnIndex];
-      if (cellValue === undefined) {
-        errors.push(
-          new ValidationError(
-            "missing column",
-            cellValue,
-            row.lineNumber,
-            columnIndex,
-          ),
-        );
-        continue;
-      }
       const columnRule = schema.columnRules[columnIndex];
       if (columnRule === undefined) {
         continue;
@@ -72,7 +68,7 @@ export class Validator {
         const errorRuleName = [leftError, rightError]
           .map((e) => e.name)
           .join(" or ");
-        return new ValidationError(
+        return new ValidationRuleError(
           `${errorRuleName}`,
           row.cellValues[columnIndex],
           row.lineNumber,
@@ -89,7 +85,7 @@ export class Validator {
           .filter((v): v is NonNullable<typeof v> => v !== undefined)
           .map((e) => e.name)
           .join(" and ");
-        return new ValidationError(
+        return new ValidationRuleError(
           `${errorRuleName}`,
           row.cellValues[columnIndex],
           row.lineNumber,
@@ -105,7 +101,7 @@ export class Validator {
           return undefined;
         }
         const errorRuleName = errors.map((e) => e.name).join(" ");
-        return new ValidationError(
+        return new ValidationRuleError(
           `(${errorRuleName})`,
           row.cellValues[columnIndex],
           row.lineNumber,
