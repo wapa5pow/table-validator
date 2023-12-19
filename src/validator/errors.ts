@@ -5,8 +5,9 @@ export class ColumnMissmatchError extends ValidationError {
     // 1-indexed line number
     readonly line: number,
   ) {
-    const message = `ColumnMissmatchError: mismatch for value: line: ${line}`;
+    const message = `the number of columns does not match the number of column rules: line: ${line}`;
     super(message);
+    this.name = this.constructor.name;
   }
 }
 
@@ -14,7 +15,7 @@ export class ValidationRuleError extends ValidationError {
   readonly columnNumber: number;
 
   constructor(
-    readonly name: string,
+    readonly ruleName: string,
     readonly value: string,
     // 1-indexed line number
     readonly line: number,
@@ -22,8 +23,9 @@ export class ValidationRuleError extends ValidationError {
     readonly columnIndex: number,
   ) {
     const columnNumber = columnIndex + 1;
-    const message = `ValidationRuleError: ${name} fails for value: "${value}", line: ${line}, column: ${columnNumber}`;
+    const message = `${ruleName} rule fails for value: "${value}", line: ${line}, column: ${columnNumber}`;
     super(message);
+    this.name = this.constructor.name;
     this.columnNumber = columnNumber;
   }
 }

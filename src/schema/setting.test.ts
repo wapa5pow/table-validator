@@ -1,5 +1,5 @@
 import { describe, expect, it } from "@jest/globals";
-import { YamlFieldError, YamlParseError } from "./errors";
+import { YamlParseError } from "./errors";
 import { convertToSchema } from "./setting";
 describe("convertToSchema", () => {
   it("should parse the content", () => {
@@ -32,14 +32,13 @@ def
     `;
     try {
       convertToSchema(content);
+      throw new Error("should not reach here");
     } catch (error) {
       expect(error).toBeInstanceOf(YamlParseError);
       if (!(error instanceof YamlParseError)) {
         throw error;
       }
-      expect(error.code).toBe("MULTIPLE_DOCS");
-      expect(error.line).toBe(3);
-      expect(error.column).toBe(1);
+      expect(error.message).toContain("MULTIPLE_DOCS");
     }
   });
 
@@ -47,16 +46,18 @@ def
     const content = `
 columns:
   - id: id
+    ok: ok
       `;
     try {
       convertToSchema(content);
+      throw new Error("should not reach here");
     } catch (error) {
-      expect(error).toBeInstanceOf(YamlFieldError);
-      if (!(error instanceof YamlFieldError)) {
+      expect(error).toBeInstanceOf(YamlParseError);
+      expect(error).toBeInstanceOf(YamlParseError);
+      if (!(error instanceof YamlParseError)) {
         throw error;
       }
-      expect(error.code).toBe("MISSING_FIELD");
-      expect(error.field).toBe("rule");
+      expect(error.message).toContain("must NOT have additional properties");
     }
   });
 });

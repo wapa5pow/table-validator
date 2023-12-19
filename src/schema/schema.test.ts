@@ -17,11 +17,12 @@ describe("Schema", () => {
     });
 
     it("should throw error if the rule is invalid", () => {
+      const rule = "length()";
       try {
-        new Schema(["length()"]);
+        new Schema([rule]);
       } catch (error) {
         expect(error).toBeInstanceOf(RuleParseError);
-        expect(error).toStrictEqual(new RuleParseError(0, 7));
+        expect(error).toStrictEqual(new RuleParseError(rule, 0, 7));
       }
     });
   });

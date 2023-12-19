@@ -11,8 +11,8 @@ export class Schema {
   constructor(readonly rawRules: string[]) {
     this.columnRules = [];
     for (let i = 0; i < rawRules.length; i++) {
+      const rawRule = rawRules[i];
       try {
-        const rawRule = rawRules[i];
         if (rawRule != null) {
           this.columnRules.push(parse(rawRule.trim()));
         } else {
@@ -20,7 +20,7 @@ export class Schema {
         }
       } catch (error) {
         if (error instanceof PeggySyntaxError) {
-          throw new RuleParseError(i, error.location.start.offset);
+          throw new RuleParseError(rawRule, i, error.location.start.offset);
         }
         throw error;
       }

@@ -1,40 +1,25 @@
-import * as yaml from "yaml";
-
 export class RuleParseError extends Error {
   constructor(
+    readonly rule: string,
     // 0-indexed column index
     readonly columnIndex: number,
     // 0-indexed offset on line
     readonly offset: number,
   ) {
-    const message = `RuleParseError: parse fails for column: ${
-      columnIndex + 1
-    }, location: ${offset + 1}`;
-    super(message);
+    const messages: string[] = [];
+    messages.push(
+      `parse fails for column: ${columnIndex + 1}, location: ${offset + 1}`,
+    );
+    messages.push(rule);
+    messages.push(`${"-".repeat(offset)}^`);
+    super(messages.join("\n"));
+    this.name = this.constructor.name;
   }
 }
 
 export class YamlParseError extends Error {
-  constructor(
-    readonly code: yaml.ErrorCode,
-    // 1-indexed line number
-    readonly line: number | undefined,
-    // 1-indexed column number
-    readonly column: number | undefined,
-    readonly message: string,
-  ) {
-    super(`YamlParseError: ${message}`);
-  }
-}
-
-export type YamlFieldErrorCode = "MISSING_FIELD" | "INVALID_FIELD_TYPE";
-
-export class YamlFieldError extends Error {
-  constructor(
-    readonly code: YamlFieldErrorCode,
-    readonly field: string,
-    readonly message: string,
-  ) {
-    super(`YamlFieldError: ${message}`);
+  constructor(readonly message: string) {
+    super(`${message}`);
+    this.name = this.constructor.name;
   }
 }

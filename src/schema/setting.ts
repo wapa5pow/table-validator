@@ -1,36 +1,59 @@
+import Ajv from "ajv";
 import * as yaml from "yaml";
 import * as csvv from "./errors";
 import { Schema } from "./schema";
 
+const settingSchema = {
+  type: "object",
+  properties: {
+    columns: {
+      type: "array",
+      items: {
+        anyOf: [
+          {
+            type: "object",
+            properties: {
+              id: { type: "string", nullable: true },
+              rule: { type: "string", nullable: true },
+            },
+            additionalProperties: false,
+            required: [""],
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+    },
+  },
+  required: ["columns"],
+  additionalProperties: false,
+} as const;
+
 interface Setting {
   readonly columns: {
-    readonly id: string;
-    readonly rule: string | null;
+    readonly id?: string;
+    readonly rule?: string;
   }[];
 }
 
-export function validateSetting(setting: Setting) {
-  if (setting.columns === undefined) {
-    throw new csvv.YamlFieldError(
-      "MISSING_FIELD",
-      "columns",
-      "columns field is required",
-    );
-  }
-  if (!Array.isArray(setting.columns)) {
-    throw new csvv.YamlFieldError(
-      "INVALID_FIELD_TYPE",
-      "columns",
-      "columns field should be array",
-    );
-  }
-}
-
 export function convertToSchema(content: string): Schema {
-  let setting: Setting;
   try {
     const parsedYaml = yaml.parse(content, { prettyErrors: true });
-    setting = parsedYaml as Setting;
+    const ajv = new Ajv();
+    const validator = ajv.compile<Setting>(settingSchema);
+    if (validator(parsedYaml)) {
+      const rawRules = parsedYaml.columns.map((column) => column?.rule ?? "");
+      return new Schema(rawRules);
+    }
+    const error = validator.errors?.[0];
+    throw (
+      new csvv.YamlParseError(
+        `${error?.message ?? "unknown error"}: path:${
+          error?.instancePath
+        }, params: ${JSON.stringify(Object.values(error?.params ?? [""])[0])}`,
+      ) ?? new Error("unknown error")
+    );
   } catch (error) {
     if (error instanceof yaml.YAMLParseError) {
       let line: number | undefined;
@@ -41,15 +64,9 @@ export function convertToSchema(content: string): Schema {
         column = linePos[0].col;
       }
       throw new csvv.YamlParseError(
-        error.code,
-        line,
-        column,
-        `parse fails for line: ${line}, column: ${column}`,
+        `parse fails for line: ${line}, column: ${column}, reason: ${error.code}`,
       );
     }
     throw error;
   }
-  validateSetting(setting);
-  const rawRules = setting.columns.map((column) => column?.rule ?? "");
-  return new Schema(rawRules);
 }

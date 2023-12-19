@@ -1,4 +1,4 @@
-import CodeMirror from "@uiw/react-codemirror";
+import CodeMirror, { EditorView } from "@uiw/react-codemirror";
 import {
   Schema,
   Table,
@@ -40,13 +40,12 @@ function App() {
   const [message, setMessage] = React.useState("");
   const [lastDate, setLastDate] = React.useState("");
   const [isValid, setIsValid] = React.useState<boolean | undefined>(undefined);
-  const [unknownError, setUnknownError] = React.useState("");
 
   const runValidation = async () => {
     setLastDate(new Date().toString());
     setYamlError("");
     setCsvError("");
-    setUnknownError("");
+    setMessage("");
     setIsValid(undefined);
 
     const messages: string[] = [];
@@ -75,13 +74,26 @@ function App() {
         setIsValid(true);
       } else {
         setIsValid(false);
-        messages.push(...errors.map((e) => `${e.message}`));
+        messages.push(...errors.map((e) => `${e}`));
       }
     } catch (error) {
-      setUnknownError(`${error}`);
+      messages.push(`${error}`);
     }
     setMessage(messages.join("\n"));
   };
+
+  const errorTheme = EditorView.theme(
+    {
+      "&": {
+        color: "red",
+        backgroundColor: "white",
+      },
+      ".cm-line": {
+        padding: "0",
+      },
+    },
+    { dark: true },
+  );
 
   return (
     <div style={{ margin: "1em" }}>
@@ -102,9 +114,13 @@ function App() {
               }}
             />
           </div>
-          <div style={{ color: "red", minHeight: "2em" }}>
-            {yamlError ? yamlError : ""}
-          </div>
+          <CodeMirror
+            value={yamlError}
+            height="4em"
+            theme={errorTheme}
+            basicSetup={false}
+            readOnly={true}
+          />
         </div>
         <div style={{ width: "50%", marginLeft: "0.5em" }}>
           <div style={{ marginBottom: "0.5em" }}>2. Write your csv</div>
@@ -117,9 +133,13 @@ function App() {
               }}
             />
           </div>
-          <div style={{ color: "red", minHeight: "2em" }}>
-            {csvError ? csvError : ""}
-          </div>
+          <CodeMirror
+            value={csvError}
+            height="4em"
+            theme={errorTheme}
+            basicSetup={false}
+            readOnly={true}
+          />
         </div>
       </div>
       <div>
@@ -146,15 +166,16 @@ function App() {
               ""
             )}
           </div>
-          <div style={{ marginTop: "0.5em" }}>
+          <div style={{ marginTop: "0.5em", marginBottom: "0.5em" }}>
             Last validated at: {lastDate}
           </div>
-        </div>
-        <div style={{ border: "1px solid #000 " }}>
-          <CodeMirror value={message} height="120px" readOnly={true} />
-        </div>
-        <div style={{ color: "red", minHeight: "2em" }}>
-          {unknownError ? unknownError : ""}
+          <CodeMirror
+            value={message}
+            height="120px"
+            readOnly={true}
+            theme={errorTheme}
+            basicSetup={false}
+          />
         </div>
       </div>
     </div>

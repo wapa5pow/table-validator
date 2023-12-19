@@ -5,7 +5,7 @@
 	},
 	"files": {
 		"ignore": [
-			"examples/**",
+			"examples/**/*",
 			"src/schema/parser/generated/grammar.ts",
 			"tsconfig.base.json",
 			"tsconfig.json"

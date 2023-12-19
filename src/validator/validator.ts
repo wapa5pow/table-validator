@@ -54,7 +54,7 @@ export class Validator {
     expr: ColumnValidationExpr,
     columnIndex: number,
     row: Row,
-  ): ValidationError | undefined {
+  ): ValidationRuleError | undefined {
     switch (expr.type) {
       case "or": {
         const leftError = this.validateColumn(expr.left, columnIndex, row);
@@ -66,7 +66,7 @@ export class Validator {
           return undefined;
         }
         const errorRuleName = [leftError, rightError]
-          .map((e) => e.name)
+          .map((e) => e.ruleName)
           .join(" or ");
         return new ValidationRuleError(
           `${errorRuleName}`,
@@ -83,7 +83,7 @@ export class Validator {
         }
         const errorRuleName = [leftError, rightError]
           .filter((v): v is NonNullable<typeof v> => v !== undefined)
-          .map((e) => e.name)
+          .map((e) => e.ruleName)
           .join(" and ");
         return new ValidationRuleError(
           `${errorRuleName}`,
@@ -100,7 +100,7 @@ export class Validator {
         if (errors.length === 0) {
           return undefined;
         }
-        const errorRuleName = errors.map((e) => e.name).join(" ");
+        const errorRuleName = errors.map((e) => e.ruleName).join(" ");
         return new ValidationRuleError(
           `(${errorRuleName})`,
           row.cellValues[columnIndex],
@@ -142,7 +142,7 @@ export class Validator {
     columnIndex: number,
     row: Row,
     rule: Rule,
-  ): ValidationError | undefined {
+  ): ValidationRuleError | undefined {
     const updateRule = this.ruleMap.get(expr) ?? rule;
     this.ruleMap.set(expr, updateRule);
     const result = updateRule.evaluate(columnIndex, row);
