@@ -15,6 +15,6 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "csvv": "file:../../dist"
+    "table-validator": "file:../../dist"
   }
 }

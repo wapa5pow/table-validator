@@ -1,7 +1,7 @@
 {
-  "name": "csvv",
+  "name": "table-validator",
   "version": "0.0.1",
-  "description": "CSV Validator",
+  "description": "Content Validator",
   "main": "index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,6 +15,7 @@
   },
   "keywords": [
     "csv",
+    "content",
     "validator",
     "schema"
   ],

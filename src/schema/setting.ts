@@ -1,6 +1,6 @@
 import Ajv from "ajv";
 import * as yaml from "yaml";
-import * as csvv from "./errors";
+import { YamlParseError } from "./errors";
 import { Schema } from "./schema";
 
 const settingSchema = {
@@ -54,7 +54,7 @@ export function convertToSchema(content: string): Schema {
     }
     const error = validator.errors?.[0];
     throw (
-      new csvv.YamlParseError(
+      new YamlParseError(
         `${error?.message ?? "unknown error"}: path:${
           error?.instancePath
         }, params: ${JSON.stringify(Object.values(error?.params ?? [""])[0])}`,
@@ -69,7 +69,7 @@ export function convertToSchema(content: string): Schema {
         line = linePos[0].line;
         column = linePos[0].col;
       }
-      throw new csvv.YamlParseError(
+      throw new YamlParseError(
         `parse fails for line: ${line}, column: ${column}, reason: ${error.code}`,
       );
     }

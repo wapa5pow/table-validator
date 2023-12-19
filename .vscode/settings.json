@@ -23,7 +23,6 @@
     "source.organizeImports.biome": "explicit"
   },
   "cSpell.words": [
-    "csvv",
     "pegjs"
   ],
   "jestrunner.runInExternalNativeTerminal": false,

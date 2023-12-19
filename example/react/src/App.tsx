@@ -1,4 +1,5 @@
 import CodeMirror, { EditorView } from "@uiw/react-codemirror";
+import React from "react";
 import {
   Schema,
   Table,
@@ -6,8 +7,7 @@ import {
   Validator,
   convertToSchema,
   convertToTable,
-} from "csvv";
-import React from "react";
+} from "table-validator";
 import "./App.css";
 
 function format(value: string): string {

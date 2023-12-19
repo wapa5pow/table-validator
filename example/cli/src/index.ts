@@ -1,8 +1,8 @@
-import { Validator, convertToSchema, convertToTable } from "csvv";
 import fs from "fs";
+import { Validator, convertToSchema, convertToTable } from "table-validator";
 
 function validateArgs(args: string[]) {
-  const usage = "Usage: csvv schema.yaml data.csv";
+  const usage = "Usage: table-validator schema.yaml data.csv";
   if (args.length !== 4) {
     throw Error(usage);
   }

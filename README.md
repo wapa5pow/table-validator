@@ -1,8 +1,14 @@
-# CSV Validator
+# Table Validator
 
-This is an csv validator library in Typescript.
-With yaml schema definition, it validates csv and throw error if csv does not match the schema.
+This is an table(like csv) validator library in Typescript.
+With yaml schema definition, it validates an table and throw error if content does not match the schema.
 It implements features inspired by "[csv-validator](https://github.com/digital-preservation/csv-validator)".
+
+## Installation
+
+```bash
+npm install table-validator
+```
 
 ## API
 
