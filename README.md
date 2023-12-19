@@ -34,20 +34,25 @@ if (errors.length === 0) {
 
 Non combinatorial expressions
 
-- is
-- not
-- in
-- regex
-- range
-- length
-- empty
-- notEmpty
-- unique
+- notEmpty: `notEmpty`
+- empty: `empty`
+- is: `is("Japan")`
+- not: `not("Tokyo")`
+- unique: `unique`
+- range: `range(10,20)`
+- length: `length(2,10)`
+- regex: `regex("[bcm]at")`
+- integer: `integer`
+- float: `float`
 
 Combinatorial expression
 
-- or
-- and
+- or: `is("Japan") or is("France")`
+- and: `length(2) and range(10,20)`
+
+Others
+
+- parentheses: `(length(2) and range(10,20)) or empty`
 
 ## Example
 
