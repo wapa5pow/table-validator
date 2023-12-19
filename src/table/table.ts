@@ -8,7 +8,14 @@ export class Row {
   constructor(readonly lineNumber: number, readonly cellValues: string[]) {}
 }
 
-export function convertToTable(content: string, hasHeader: boolean) {
+/**
+ * Convert csv in string to Table
+ *
+ * @param content csv in string
+ * @param hasHeader true if csv has header
+ * @returns
+ */
+export function convertToTable(content: string, hasHeader: boolean): Table {
   const csv = papa.parse<string[]>(content, {
     header: false,
     skipEmptyLines: true,

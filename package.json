@@ -13,8 +13,12 @@
     "lint": "biome lint src",
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "csv",
+    "validator",
+    "schema"
+  ],
+  "author": "Koichi Ishida",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.23.5",

@@ -23,6 +23,13 @@ export class Validator {
   // For instance, uniqueRule should maintain the column value while it scans the entire column.
   private readonly ruleMap = new Map<ColumnValidationExpr, Rule>();
 
+  /**
+   * Validate the table with the schema.
+   *
+   * @param table validation target
+   * @param schema validation schema
+   * @returns
+   */
   validate(table: Table, schema: Schema): ValidationError[] {
     return table.rows.flatMap((row) => this.validateRow(row, schema));
   }

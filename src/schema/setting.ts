@@ -37,6 +37,12 @@ interface Setting {
   }[];
 }
 
+/**
+ * convert yaml to schema
+ *
+ * @param content yaml in string
+ * @returns
+ */
 export function convertToSchema(content: string): Schema {
   try {
     const parsedYaml = yaml.parse(content, { prettyErrors: true });
