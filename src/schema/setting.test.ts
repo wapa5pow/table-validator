@@ -12,6 +12,18 @@ columns:
     expect(schema.columnRules).toHaveLength(1);
   });
 
+  it("should parse empty column rule", () => {
+    const content = `
+    columns:
+      - id: id
+        rule: length(5)
+      -
+      - id: name
+          `;
+    const schema = convertToSchema(content);
+    expect(schema.columnRules).toHaveLength(3);
+  });
+
   it("should throw error if the yaml is invalid", () => {
     const content = `
 abc

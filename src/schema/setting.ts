@@ -24,22 +24,13 @@ export function validateSetting(setting: Setting) {
       "columns field should be array",
     );
   }
-  for (let i = 0; i < setting.columns.length; i++) {
-    const column = setting.columns[i];
-    if (column.rule === undefined) {
-      throw new csvv.YamlFieldError(
-        "MISSING_FIELD",
-        "rule",
-        "rule field is required",
-      );
-    }
-  }
 }
 
 export function convertToSchema(content: string): Schema {
   let setting: Setting;
   try {
-    setting = yaml.parse(content, { prettyErrors: true }) as Setting;
+    const parsedYaml = yaml.parse(content, { prettyErrors: true });
+    setting = parsedYaml as Setting;
   } catch (error) {
     if (error instanceof yaml.YAMLParseError) {
       let line: number | undefined;
@@ -59,6 +50,6 @@ export function convertToSchema(content: string): Schema {
     throw error;
   }
   validateSetting(setting);
-  const rawRules = setting.columns.map((column) => column.rule ?? "");
+  const rawRules = setting.columns.map((column) => column?.rule ?? "");
   return new Schema(rawRules);
 }
