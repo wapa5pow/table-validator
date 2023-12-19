@@ -1,6 +1,6 @@
 {
   "name": "table-validator",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Content Validator",
   "main": "index.js",
   "types": "dist/index.d.ts",
@@ -11,6 +11,7 @@
     "react": "npm run build && cd example/react && npm install && npm run start",
     "cli": "npm run build && cd example/cli && npm install && npm run start",
     "lint": "biome lint src",
+    "deploy": "cd example/react && npm run build && npm run deploy",
     "test": "jest"
   },
   "keywords": [

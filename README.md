@@ -1,6 +1,8 @@
 # Table Validator
 
-This is an table(like csv) validator library in Typescript.
+[**Online Demo**](https://wapa5pow.github.io/table-validator/)
+
+[table-validator](https://www.npmjs.com/package/table-validator) is an table(like csv) validator library in Typescript.
 With yaml schema definition, it validates an table and throw error if content does not match the schema.
 It implements features inspired by "[csv-validator](https://github.com/digital-preservation/csv-validator)".
 

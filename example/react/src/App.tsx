@@ -98,7 +98,7 @@ function App() {
   return (
     <div style={{ margin: "1em" }}>
       <h1 style={{ padding: 0, marginBottom: "0.2em", marginTop: "0" }}>
-        CSV Validator
+        <a href="https://github.com/wapa5pow/table-validator">CSV Validator</a>
       </h1>
       <div style={{ display: "flex" }}>
         <div style={{ width: "50%", marginRight: "0.5em" }}>
