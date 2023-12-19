@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/table-validator/static/css/main.f855e6bc.css",
-    "main.js": "/table-validator/static/js/main.eab99407.js",
+    "main.js": "/table-validator/static/js/main.bf49e595.js",
     "static/js/787.9ec91b39.chunk.js": "/table-validator/static/js/787.9ec91b39.chunk.js",
     "index.html": "/table-validator/index.html",
     "main.f855e6bc.css.map": "/table-validator/static/css/main.f855e6bc.css.map",
-    "main.eab99407.js.map": "/table-validator/static/js/main.eab99407.js.map",
+    "main.bf49e595.js.map": "/table-validator/static/js/main.bf49e595.js.map",
     "787.9ec91b39.chunk.js.map": "/table-validator/static/js/787.9ec91b39.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.eab99407.js"
+    "static/js/main.bf49e595.js"
   ]
 }
