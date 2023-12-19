@@ -1,10 +1,16 @@
 # CSV Validator
 
+This is an csv validator library in Typescript.
+With yaml schema definition, it validates csv and throw error if csv does not match the schema.
+It implements features inspired by "[csv-validator](https://github.com/digital-preservation/csv-validator)".
+
 ## API
 
 ```typescript
 const schema = convertToSchema(fs.readFileSync("/path/to/yaml", "utf8"));
-const table = convertToTable(fs.readFileSync("/path/to/csv", "utf8"), true);
+const table = convertToTable(fs.readFileSync("/path/to/csv", "utf8"), {
+  header: true,
+});
 const validator = new Validator();
 const errors = validator.validate(table, schema);
 if (errors.length === 0) {
@@ -13,9 +19,27 @@ if (errors.length === 0) {
   for (const error of errors) {
     console.log(`${error}`);
   }
-  process.exit(1);
 }
 ```
+
+## List of available rules
+
+Non combinatorial expressions
+
+- is
+- not
+- in
+- regex
+- range
+- length
+- empty
+- notEmpty
+- unique
+
+Combinatorial expression
+
+- or
+- and
 
 ## Example
 
