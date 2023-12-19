@@ -16,10 +16,10 @@ function validateArgs(args: string[]) {
 async function main() {
   validateArgs(process.argv);
 
-  // yaml読み込み
   const schema = convertToSchema(fs.readFileSync(process.argv[2], "utf8"));
-  // csv読み込み
-  const table = convertToTable(fs.readFileSync(process.argv[3], "utf8"));
+  const table = convertToTable(fs.readFileSync(process.argv[3], "utf8"), {
+    header: true,
+  });
 
   const validator = new Validator();
   const errors = validator.validate(table, schema);
@@ -27,7 +27,7 @@ async function main() {
     console.log("No error");
   } else {
     for (const error of errors) {
-      console.error(error.message);
+      console.log(`${error}`);
     }
     process.exit(1);
   }

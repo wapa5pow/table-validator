@@ -59,7 +59,7 @@ function App() {
     }
     console.log(JSON.stringify(schema));
     try {
-      table = convertToTable(csvValue, true);
+      table = convertToTable(csvValue, { header: true });
     } catch (err) {
       setCsvError(`${err}`);
       return;
