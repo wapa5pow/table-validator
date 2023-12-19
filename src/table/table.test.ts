@@ -9,7 +9,7 @@ id,country,capital,population
 2,Japan,Tokyo,14094034
 3,Russia,Moscow,13104177
 `;
-    const table = convertToTable(content, true);
+    const table = convertToTable(content, { header: true });
     expect(table.rows).toHaveLength(3);
     expect(table.rows[1].cellValues).toHaveLength(4);
   });
@@ -21,7 +21,7 @@ id,country,capital,population
 2,Japan,Tokyo
 3,Russia,Moscow,13104177
 `;
-    const table = convertToTable(content, true);
+    const table = convertToTable(content, { header: true });
     expect(table.rows).toHaveLength(3);
     expect(table.rows[1].cellValues).toHaveLength(3);
   });

@@ -29,7 +29,7 @@ id,country,capital,population
 `;
 
         const schema = convertToSchema(yamlValue);
-        const table = convertToTable(csvValue, true);
+        const table = convertToTable(csvValue, { header: true });
         const validator = new Validator();
         const errors = validator.validate(table, schema);
         expect(errors).toHaveLength(0);
@@ -43,7 +43,7 @@ id,country,capital,population
 `;
 
         const schema = convertToSchema(yamlValue);
-        const table = convertToTable(csvValue, true);
+        const table = convertToTable(csvValue, { header: true });
         const validator = new Validator();
         const errors = validator.validate(table, schema);
         expect(errors).toHaveLength(1);
@@ -72,7 +72,7 @@ id,country,capital,population
 `;
 
         const schema = convertToSchema(yamlValue);
-        const table = convertToTable(csvValue, true);
+        const table = convertToTable(csvValue, { header: true });
         const validator = new Validator();
         const errors = validator.validate(table, schema);
         expect(errors).toHaveLength(1);
