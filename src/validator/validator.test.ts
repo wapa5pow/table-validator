@@ -328,5 +328,22 @@ id,country,capital,population
         expect(error.columnNumber).toBe(2);
       });
     });
+
+    describe("any", () => {
+      it("should return error if the column is invalid", () => {
+        const validator = new Validator();
+        const rule1 = 'any("a")';
+        const rule2 = 'any("1","2","3")';
+        const errors = validator.validate(
+          new Table([new Row(1, ["a", "1"]), new Row(2, ["a", "4"])]),
+          new Schema([rule1, rule2]),
+        );
+        expect(errors).toHaveLength(1);
+        const error = errors[0] as ValidationRuleError;
+        expect(error.ruleName).toBe(rule2);
+        expect(error.line).toBe(2);
+        expect(error.columnNumber).toBe(2);
+      });
+    });
   });
 });
