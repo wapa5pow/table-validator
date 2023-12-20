@@ -3,7 +3,7 @@ import { FloatExpr } from "../parser/generated/grammar";
 import { FloatRule } from "./float-rule";
 
 describe("FloatRule", () => {
-  const expr: FloatExpr = { type: "float" };
+  const expr: FloatExpr = { type: "float", text: "float" };
 
   describe("valid", () => {
     const rule = new FloatRule(expr);
@@ -22,13 +22,6 @@ describe("FloatRule", () => {
       ["", false],
     ])("returns %s when %s", (value, expected) => {
       expect(rule.valid(value)).toBe(expected);
-    });
-  });
-
-  describe("ruleName", () => {
-    const rule = new FloatRule(expr);
-    test("returns ruleName", () => {
-      expect(rule.name).toBe("float");
     });
   });
 });

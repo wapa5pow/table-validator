@@ -21,14 +21,14 @@ export abstract class Rule {
 
   protected fail(columnIndex: number, row: Row): ValidationRuleError {
     return new ValidationRuleError(
-      this.name,
+      this.text,
       row.cellValues[columnIndex],
       row.lineNumber,
       columnIndex,
     );
   }
 
-  get name(): string {
-    return this.expr.type;
+  get text(): string {
+    return this.expr.text;
   }
 }

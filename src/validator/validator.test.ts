@@ -47,7 +47,7 @@ id,country,capital,population
         const validator = new Validator();
         const errors = validator.validate(table, schema);
         expect(errors).toHaveLength(1);
-        expect((errors[0] as ValidationRuleError).ruleName).toContain("unique");
+        expect((errors[0] as ValidationRuleError).ruleText).toContain("unique");
       });
     });
 
@@ -102,7 +102,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toBe(rule);
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(3);
       });
@@ -118,7 +118,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toBe("range(10,20)");
+        expect(error.ruleText).toBe("range(10,20)");
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(3);
       });
@@ -132,7 +132,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toBe(rule);
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(3);
       });
@@ -148,7 +148,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toBe(rule);
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(3);
       });
@@ -162,7 +162,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toBe('(is("foo") or is("bar"))');
+        expect(error.ruleText).toBe('(is("foo") or is("bar"))');
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(3);
       });
@@ -178,7 +178,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toContain("is");
+        expect(error.ruleText).toContain("is");
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(2);
       });
@@ -194,7 +194,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toContain("not");
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(1);
       });
@@ -210,7 +210,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toBe("notEmpty");
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(2);
       });
@@ -226,7 +226,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toBe("empty");
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(1);
       });
@@ -243,7 +243,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toBe("unique");
+        expect(error.ruleText).toBe(rule2);
         expect(error.line).toBe(2);
         expect(error.columnNumber).toBe(2);
       });
@@ -259,7 +259,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toContain("range");
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(3);
       });
@@ -275,7 +275,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toContain("length");
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(1);
       });
@@ -291,7 +291,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toContain("regex");
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(3);
       });
@@ -307,7 +307,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toContain("integer");
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(2);
       });
@@ -323,7 +323,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toContain("float");
+        expect(error.ruleText).toBe(rule);
         expect(error.line).toBe(1);
         expect(error.columnNumber).toBe(2);
       });
@@ -340,7 +340,7 @@ id,country,capital,population
         );
         expect(errors).toHaveLength(1);
         const error = errors[0] as ValidationRuleError;
-        expect(error.ruleName).toBe(rule2);
+        expect(error.ruleText).toBe(rule2);
         expect(error.line).toBe(2);
         expect(error.columnNumber).toBe(2);
       });

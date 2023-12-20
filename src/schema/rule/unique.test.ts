@@ -3,7 +3,7 @@ import { UniqueExpr } from "../parser/generated/grammar";
 import { UniqueRule } from "./unique";
 
 describe("UniqueRule", () => {
-  const expr: UniqueExpr = { type: "unique" };
+  const expr: UniqueExpr = { type: "unique", text: "unique" };
   describe("valid", () => {
     test("should return true for a unique cell value", () => {
       const uniqueRule = new UniqueRule(expr);

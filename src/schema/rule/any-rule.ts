@@ -10,8 +10,4 @@ export class AnyRule extends Rule {
     const values = [this.expr.left].concat(this.expr.right);
     return values.includes(cellValue);
   }
-
-  get name() {
-    return this.expr.text;
-  }
 }

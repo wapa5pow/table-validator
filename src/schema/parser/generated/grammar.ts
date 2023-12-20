@@ -354,37 +354,37 @@ function peg$parse(input, options) {
  return { type: 'and', left: left, right: right } };// @ts-ignore
 
   var peg$f2 = function() {// @ts-ignore
- return { type: 'notEmpty' }; };// @ts-ignore
+ return { type: 'notEmpty', text: text() }; };// @ts-ignore
 
   var peg$f3 = function() {// @ts-ignore
- return { type: 'empty' }; };// @ts-ignore
+ return { type: 'empty', text: text() }; };// @ts-ignore
 
   var peg$f4 = function(value) {// @ts-ignore
- return { type: 'is', value: value }; };// @ts-ignore
+ return { type: 'is', value: value, text: text() }; };// @ts-ignore
 
   var peg$f5 = function(value) {// @ts-ignore
- return { type: 'not', value: value }; };// @ts-ignore
+ return { type: 'not', value: value, text: text() }; };// @ts-ignore
 
   var peg$f6 = function() {// @ts-ignore
- return { type: 'unique' }; };// @ts-ignore
+ return { type: 'unique', text: text() }; };// @ts-ignore
 
   var peg$f7 = function(min, max) {// @ts-ignore
- return { type: 'range', min: min, max: max, };};// @ts-ignore
+ return { type: 'range', min: min, max: max, text: text() };};// @ts-ignore
 
   var peg$f8 = function(value) {// @ts-ignore
  return value; };// @ts-ignore
 
   var peg$f9 = function(min, max) {// @ts-ignore
- return { type: 'length', min: min, max: max}; };// @ts-ignore
+ return { type: 'length', min: min, max: max, text: text() }; };// @ts-ignore
 
   var peg$f10 = function(value) {// @ts-ignore
- return { type: 'regex', value: value }; };// @ts-ignore
+ return { type: 'regex', value: value, text: text() }; };// @ts-ignore
 
   var peg$f11 = function() {// @ts-ignore
- return { type: 'integer' }; };// @ts-ignore
+ return { type: 'integer', text: text() }; };// @ts-ignore
 
   var peg$f12 = function() {// @ts-ignore
- return { type: 'float' }; };// @ts-ignore
+ return { type: 'float', text: text() }; };// @ts-ignore
 
   var peg$f13 = function(leftValue, value) {// @ts-ignore
  return value; };// @ts-ignore
@@ -2232,24 +2232,26 @@ export type SingleExpr =
   | IntegerExpr
   | FloatExpr
   | AnyExpr;
-export type NotEmptyExpr = { type: "notEmpty" };
-export type EmptyExpr = { type: "empty" };
-export type IsExpr = { type: "is"; value: StringLiteral };
-export type NotExpr = { type: "not"; value: StringLiteral };
-export type UniqueExpr = { type: "unique" };
+export type NotEmptyExpr = { type: "notEmpty"; text: string };
+export type EmptyExpr = { type: "empty"; text: string };
+export type IsExpr = { type: "is"; value: StringLiteral; text: string };
+export type NotExpr = { type: "not"; value: StringLiteral; text: string };
+export type UniqueExpr = { type: "unique"; text: string };
 export type RangeExpr = {
   type: "range";
   min: IntegerLiteralOrAny;
   max: IntegerLiteralOrAny;
+  text: string;
 };
 export type LengthExpr = {
   type: "length";
   min: PositiveIntegerOrAny | null;
   max: PositiveIntegerOrAny;
+  text: string;
 };
-export type RegExpExpr = { type: "regex"; value: StringLiteral };
-export type IntegerExpr = { type: "integer" };
-export type FloatExpr = { type: "float" };
+export type RegExpExpr = { type: "regex"; value: StringLiteral; text: string };
+export type IntegerExpr = { type: "integer"; text: string };
+export type FloatExpr = { type: "float"; text: string };
 export type AnyExpr = {
   type: "any";
   left: StringLiteral;

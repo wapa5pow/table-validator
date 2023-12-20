@@ -27,11 +27,4 @@ export class LengthRule extends Rule {
     }
     return true;
   }
-
-  get name() {
-    if (this.expr.min == null) {
-      return `${this.expr.type}(${this.expr.max})`;
-    }
-    return `${this.expr.type}(${this.expr.min},${this.expr.max})`;
-  }
 }

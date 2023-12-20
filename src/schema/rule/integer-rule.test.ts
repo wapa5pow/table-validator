@@ -3,7 +3,7 @@ import { IntegerExpr } from "../parser/generated/grammar";
 import { IntegerRule } from "./integer-rule";
 
 describe("IntegerRule", () => {
-  const expr: IntegerExpr = { type: "integer" };
+  const expr: IntegerExpr = { type: "integer", text: "float" };
   describe("valid", () => {
     const rule = new IntegerRule(expr);
     test.each([
@@ -19,13 +19,6 @@ describe("IntegerRule", () => {
       ["", false],
     ])("returns %s when %s", (value, expected) => {
       expect(rule.valid(value)).toBe(expected);
-    });
-  });
-
-  describe("ruleName", () => {
-    const rule = new IntegerRule(expr);
-    test("returns ruleName", () => {
-      expect(rule.name).toBe("integer");
     });
   });
 });

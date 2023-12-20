@@ -14,25 +14,25 @@ nonConditionalExpr = singleExpr / parenthesizedExpr
 
 singleExpr = notEmptyExpr / emptyExpr / isExpr / notExpr / uniqueExpr / rangeExpr / lengthExpr / regExpExpr / integerExpr / floatExpr / anyExpr
 
-notEmptyExpr = "notEmpty" { return { type: 'notEmpty' }; }
+notEmptyExpr = "notEmpty" { return { type: 'notEmpty', text: text() }; }
 
-emptyExpr = "empty" { return { type: 'empty' }; }
+emptyExpr = "empty" { return { type: 'empty', text: text() }; }
 
-isExpr = "is(" value:stringProvider ")" { return { type: 'is', value: value }; }
+isExpr = "is(" value:stringProvider ")" { return { type: 'is', value: value, text: text() }; }
 
-notExpr = "not(" value:stringProvider ")" { return { type: 'not', value: value }; }
+notExpr = "not(" value:stringProvider ")" { return { type: 'not', value: value, text: text() }; }
 
-uniqueExpr = "unique" { return { type: 'unique' }; }
+uniqueExpr = "unique" { return { type: 'unique', text: text() }; }
 
-rangeExpr = "range(" min:integerLiteralOrAny "," max:integerLiteralOrAny ")" { return { type: 'range', min: min, max: max, };}
+rangeExpr = "range(" min:integerLiteralOrAny "," max:integerLiteralOrAny ")" { return { type: 'range', min: min, max: max, text: text() };}
 
-lengthExpr = "length(" min:(value:positiveIntegerOrAny "," { return value; })? max:positiveIntegerOrAny ")" { return { type: 'length', min: min, max: max}; }
+lengthExpr = "length(" min:(value:positiveIntegerOrAny "," { return value; })? max:positiveIntegerOrAny ")" { return { type: 'length', min: min, max: max, text: text() }; }
 
-regExpExpr = "regex(" value:stringLiteral ")" { return { type: 'regex', value: value }; }
+regExpExpr = "regex(" value:stringLiteral ")" { return { type: 'regex', value: value, text: text() }; }
 
-integerExpr = "integer" { return { type: 'integer' }; }
+integerExpr = "integer" { return { type: 'integer', text: text() }; }
 
-floatExpr = "float" { return { type: 'float' }; }
+floatExpr = "float" { return { type: 'float', text: text() }; }
 
 anyExpr = "any(" leftValue:stringProvider rightValues:("," value:stringProvider { return value; })*  ")" { return { type: 'any', left: leftValue, right: rightValues, text: text() }; }
 

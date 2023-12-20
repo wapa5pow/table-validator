@@ -3,7 +3,7 @@ import { EmptyExpr } from "../parser/generated/grammar";
 import { EmptyRule } from "./empty-rule";
 
 describe("EmptyRule", () => {
-  const expr: EmptyExpr = { type: "empty" };
+  const expr: EmptyExpr = { type: "empty", text: "empty" };
   describe("valid", () => {
     const rule = new EmptyRule(expr);
     test.each([
@@ -11,13 +11,6 @@ describe("EmptyRule", () => {
       ["", true],
     ])("returns %s when %s", (value, expected) => {
       expect(rule.valid(value)).toBe(expected);
-    });
-  });
-
-  describe("ruleName", () => {
-    const rule = new EmptyRule(expr);
-    test("returns ruleName", () => {
-      expect(rule.name).toBe("empty");
     });
   });
 });

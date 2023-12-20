@@ -25,8 +25,4 @@ export class RangeRule extends Rule {
     }
     return true;
   }
-
-  get name() {
-    return `${this.expr.type}(${this.expr.min},${this.expr.max})`;
-  }
 }
