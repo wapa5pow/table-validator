@@ -74,7 +74,7 @@ export class Validator {
           return undefined;
         }
         const errorRuleName = [leftError, rightError]
-          .map((e) => e.ruleName)
+          .map((e) => e.ruleText)
           .join(" or ");
         return new ValidationRuleError(
           `${errorRuleName}`,
@@ -91,7 +91,7 @@ export class Validator {
         }
         const errorRuleName = [leftError, rightError]
           .filter((v): v is NonNullable<typeof v> => v !== undefined)
-          .map((e) => e.ruleName)
+          .map((e) => e.ruleText)
           .join(" and ");
         return new ValidationRuleError(
           `${errorRuleName}`,
@@ -108,7 +108,7 @@ export class Validator {
         if (errors.length === 0) {
           return undefined;
         }
-        const errorRuleName = errors.map((e) => e.ruleName).join(" ");
+        const errorRuleName = errors.map((e) => e.ruleText).join(" ");
         return new ValidationRuleError(
           `(${errorRuleName})`,
           row.cellValues[columnIndex],

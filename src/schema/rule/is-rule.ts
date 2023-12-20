@@ -9,8 +9,4 @@ export class IsRule extends Rule {
   valid(cellValue: string): boolean {
     return cellValue === this.expr.value;
   }
-
-  get name() {
-    return `${this.expr.type}("${this.expr.value}")`;
-  }
 }

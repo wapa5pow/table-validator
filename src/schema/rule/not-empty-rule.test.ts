@@ -3,7 +3,7 @@ import { NotEmptyExpr } from "../parser/generated/grammar";
 import { NotEmptyRule } from "./not-empty-rule";
 
 describe("NotEmptyRule", () => {
-  const expr: NotEmptyExpr = { type: "notEmpty" };
+  const expr: NotEmptyExpr = { type: "notEmpty", text: "notEmpty" };
   describe("valid", () => {
     const rule = new NotEmptyRule(expr);
     test.each([
@@ -11,13 +11,6 @@ describe("NotEmptyRule", () => {
       ["", false],
     ])("returns %s when %s", (value, expected) => {
       expect(rule.valid(value)).toBe(expected);
-    });
-  });
-
-  describe("ruleName", () => {
-    const rule = new NotEmptyRule(expr);
-    test("returns ruleName", () => {
-      expect(rule.name).toBe("notEmpty");
     });
   });
 });

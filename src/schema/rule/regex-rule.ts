@@ -19,8 +19,4 @@ export class RegexRule extends Rule {
   valid(cellValue: string): boolean {
     return this.regex.test(cellValue);
   }
-
-  get name() {
-    return `${this.expr.type}("${this.expr.value}")`;
-  }
 }

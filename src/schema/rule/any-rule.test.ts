@@ -25,7 +25,7 @@ describe("AnyRule", () => {
       text: 'any("foo")',
     });
     test("returns ruleName", () => {
-      expect(rule.name).toBe('any("foo")');
+      expect(rule.text).toBe('any("foo")');
     });
   });
 });
