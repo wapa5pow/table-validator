@@ -44,6 +44,7 @@ Non combinatorial expressions
 - regex: `regex("[bcm]at")`
 - integer: `integer`
 - float: `float`
+- any: `any("a","b")`
 
 Combinatorial expression
 
