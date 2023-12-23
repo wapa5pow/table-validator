@@ -18,23 +18,23 @@ notEmptyExpr = "notEmpty" { return { type: 'notEmpty', text: text() }; }
 
 emptyExpr = "empty" { return { type: 'empty', text: text() }; }
 
-isExpr = "is(" value:stringProvider ")" { return { type: 'is', value: value, text: text() }; }
+isExpr = "is(" _ value:stringProvider _ ")" { return { type: 'is', value: value, text: text() }; }
 
-notExpr = "not(" value:stringProvider ")" { return { type: 'not', value: value, text: text() }; }
+notExpr = "not(" _ value:stringProvider _ ")" { return { type: 'not', value: value, text: text() }; }
 
 uniqueExpr = "unique" { return { type: 'unique', text: text() }; }
 
-rangeExpr = "range(" min:integerLiteralOrAny "," max:integerLiteralOrAny ")" { return { type: 'range', min: min, max: max, text: text() };}
+rangeExpr = "range(" _ min:integerLiteralOrAny _ "," _ max:integerLiteralOrAny _ ")" { return { type: 'range', min: min, max: max, text: text() };}
 
-lengthExpr = "length(" min:(value:positiveIntegerOrAny "," { return value; })? max:positiveIntegerOrAny ")" { return { type: 'length', min: min, max: max, text: text() }; }
+lengthExpr = "length(" _ min:(value:positiveIntegerOrAny _ "," { return value; })? _ max:positiveIntegerOrAny _ ")" { return { type: 'length', min: min, max: max, text: text() }; }
 
-regExpExpr = "regex(" value:stringLiteral ")" { return { type: 'regex', value: value, text: text() }; }
+regExpExpr = "regex(" _ value:stringLiteral _ ")" { return { type: 'regex', value: value, text: text() }; }
 
 integerExpr = "integer" { return { type: 'integer', text: text() }; }
 
 floatExpr = "float" { return { type: 'float', text: text() }; }
 
-anyExpr = "any(" leftValue:stringProvider rightValues:("," value:stringProvider { return value; })*  ")" { return { type: 'any', left: leftValue, right: rightValues, text: text() }; }
+anyExpr = "any(" _ leftValue:stringProvider _ rightValues:("," _ value:stringProvider _ { return value; } )* ")" { return { type: 'any', left: leftValue, right: rightValues, text: text() }; }
 
 stringProvider = stringLiteral
 
@@ -50,4 +50,6 @@ positiveIntegerOrAny = positiveIntegerLiteral / wildcardLiteral
 
 integerLiteralOrAny = integerLiteral / wildcardLiteral
 
-parenthesizedExpr = "(" values:columnValidationExpr+ ")" { return { type: 'parentheses', values: values }; }
+parenthesizedExpr = "(" _ values:columnValidationExpr+ _ ")" { return { type: 'parentheses', values: values }; }
+
+_ "whitespace" = [ ]*
