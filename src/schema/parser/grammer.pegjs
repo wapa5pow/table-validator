@@ -4,9 +4,11 @@ columnValidationExpr = combinatorialExpr / nonCombinatorialExpr
 
 combinatorialExpr = orExpr / andExpr
 
-orExpr = left:nonCombinatorialExpr " or " right:columnValidationExpr { return { type: 'or', left: left, right: right } };
+orExpr = left:nonCombinatorialExpr [ ]+ "or" [ ]+ right:columnValidationExpr { return { type: 'or', left: left, right: right } };
 
-andExpr = left:nonCombinatorialExpr " and " right:columnValidationExpr { return { type: 'and', left: left, right: right } };
+andExpr = left:nonCombinatorialExpr andOrWhiteSpaceLiteral right:columnValidationExpr { return { type: 'and', left: left, right: right } };
+
+andOrWhiteSpaceLiteral = [ ]+ "and" [ ]+ / [ ]+
 
 nonCombinatorialExpr = nonConditionalExpr
 
